@@ -1,0 +1,17 @@
+############################################
+# Only track one project in this repo
+############################################
+
+# Ignore everything at the repo root
+/*
+
+# Keep this file so the rules are tracked
+!.gitignore
+
+# Keep the target project folder and all its contents
+!/MCU1_GPIO_Driver_Baremetal/
+!/MCU1_GPIO_Driver_Baremetal/**
+
+# (Optional) keep common root docs if you add them
+!README.md
+!LICENSE
