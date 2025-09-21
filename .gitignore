@@ -1,5 +1,6 @@
 # Ignore all other projects
 MCU1_GPIO_Driver_Baremetal/
+MCU1_GPIO_Driver_Baremetal/.settings/
 MCU1_GPIO_Driver_Baremetal_Ind_Study/
 MCU1_GPIO_Driver_Baremetal_Ind_Study2/
 MCU1_GPIO_Driver_Baremetal_Interrupt/autogen/
@@ -24,3 +25,5 @@ stm32f4xx_drivers/
 stm32f4xx_drivers_ClassRepo_dont_Change_OnlyCopy/
 Artful_Bytes/
 test.c
+.metadata/
+.vscode/
