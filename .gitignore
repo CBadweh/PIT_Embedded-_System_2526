@@ -1,17 +1,26 @@
-############################################
-# Only track one project in this repo
-############################################
-
-# Ignore everything at the repo root
-/*
-
-# Keep this file so the rules are tracked
-!.gitignore
-
-# Keep the target project folder and all its contents
-!/MCU1_GPIO_Driver_Baremetal/
-!/MCU1_GPIO_Driver_Baremetal/**
-
-# (Optional) keep common root docs if you add them
-!README.md
-!LICENSE
+# Ignore all other projects
+MCU1_GPIO_Driver_Baremetal/
+MCU1_GPIO_Driver_Baremetal_Ind_Study/
+MCU1_GPIO_Driver_Baremetal_Ind_Study2/
+MCU1_GPIO_Driver_Baremetal_Interrupt/autogen/
+MCU1_GPIO_Driver_Baremetal_Interrupt/bsp/
+MCU1_GPIO_Driver_Baremetal_Interrupt/Debug/
+MCU1_GPIO_Driver_Baremetal_Interrupt/.settings/
+MCU1_GPIO_Driver_Baremetal_Interrupt/.cproject
+MCU1_GPIO_Driver_Baremetal_Interrupt/.project
+MCU1_GPIO_Driver_Baremetal_Interrupt/*.launch
+MCU1_GPIO_Driver_Baremetal_Interrupt/*.ld
+Clock_ADC_Config/
+Clock_HSI_Measurement/
+Clock_HSI_Measurement_GUI/
+Clcok/
+Discovery_GPIO_Driver/
+Empty_Project/
+MCU1_Button_Interrupt/
+MCU1_GPIO_Driver/
+MCU1_GPIO_Driver2_noComments/
+Nucelo_Toggle/
+stm32f4xx_drivers/
+stm32f4xx_drivers_ClassRepo_dont_Change_OnlyCopy/
+Artful_Bytes/
+test.c
