@@ -1,0 +1,155 @@
+Hey, welcome back to the lecture.
+
+So, our third step is send the address of the slave with read write bit set to 0.
+
+Now
+
+let's do that. For that
+
+let me create one more helper function,
+
+so now let me call it as I2C
+
+let's say execute
+
+Address phase. So, now let me create this and for that I'm going to send the base address of the peripheral
+
+and after that the slave address.
+
+All right.
+
+Now again this is actually private function,
+
+So what I will do is, I will just keep all static functions in the beginning. So, let's keep everything
+
+in the beginning.
+
+All right.
+
+So here.
+
+So, let's keep all the private functions in the beginning so let's copy this and let's implement here
+
+Static void ExecuteAddressPhase.
+
+So, we have to take the address, base address of the peripheral and the slave address.
+
+All right.
+
+And let me create the prototype of this write here.
+
+All right. So, later we have to give the comment section this section, so that I'm not going to do
+
+now.
+
+So, where you have to explain everything about that function which is really important documenting the
+
+code is really important.
+
+All right.
+
+So, now here what we're going to do is.So, we are going to send the seven bit slave address and one bit of
+
+a read and write information.
+
+Right?
+
+So, what we can do is, first let's shift the slave address by one bit making space for the read
+
+write bit.
+
+So, this actually makes space for read and write
+
+bit. Isn't it? So, slave address 7 bit slave address is moved by one bit.
+
+All right.
+
+And after that we can clear the 0th bit
+
+so just clear the 0th bit, and then put this data into the data register of the I2C
+
+peripheral.
+
+So, just copy this and let's open the data register and let's put this address.That's it.
+
+So, this is actually executing the address phase.
+
+So, here the slave address means slave address is Slave address + the read and write bit.
+
+Now, what is our next step?
+
+So, we just completed this step sending the address of the slave.
+
+And after that confirm that address phase is completed by checking the ADDR flag in the SR1.
+
+That is very important.
+
+Now let's do that.
+
+Let's go back to the code.
+
+All right.
+
+And step number 4.
+
+All right.
+
+So, again we can use this line of code,
+
+so in this case we have to use ADDR.
+
+All right.
+
+So, how to clear the ADDR flag? that we have to explore.
+
+Here it is
+
+Address sent in the case of master mode.
+
+And it is actually address matched flag when the device is in slave mode.
+
+Now, this bit is cleared by the software reading SR1 register followed by a SR2 register.
+
+So, which is actually very important.
+
+So, now you have to clear the ADDR flag. To clear the ADDR flag
+
+let's create another helper function,
+
+so let's create in the beginning.
+
+So, let me create static void I2C_ClearADDRFlag.
+
+So, we just need this base address.
+
+All right. Let's give the prototype here and let's implement here.
+
+You have to read SR1 followed by a SR2. Right?
+
+So, let's create a small variable uint16_t
+
+or you can do 32 underscore t dummy read is equal to PI2Cx SR1 then you have to read SR2.
+
+All right.
+
+And just typecast this to void otherwise, compiler will issue unused variable error .
+
+All right. That's it.
+
+So, it is giving some warning unused static function. So, let's use this static function from our
+
+code write here.
+
+That's it.
+
+What is our next step?
+
+So, we did this
+
+and our next step is send data until the length becomes zero.
+
+You should keep sending the data now.
+
+So, remember that before sending the data you have to first confirm whether the data is the empty or not,
+
+so the way to do that is by checking the TxE flag. So, let's do that in the next lecture.

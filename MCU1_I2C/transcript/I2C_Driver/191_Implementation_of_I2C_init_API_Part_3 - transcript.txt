@@ -1,0 +1,251 @@
+Hey, welcome back to the lecture.
+
+So, now let's configure the CCR field.
+
+Here you can see that the CCR field is of 12 bits (0 to 11).
+
+So, we have to calculate this value now let's go back to the project,
+
+let's do the CCR calculations.
+
+Let me just create one variable
+
+uint16_t ccr_value so let me make it as 0 and let me make a tempreg is equal to 0.
+
+So
+
+So, this is actually CRC calculations
+
+and for that
+
+so now first let's check what exactly is our serial clock speed, which is given by the user.
+
+If the speed is lesser than or equal to speed let's say standard mode, then we should configure the mode is
+
+standard mode.
+
+Right?
+
+else the mode is fast mode. Correct? For the standard mode,
+
+so now first you have to configure the mode. To configure the mode
+
+you have to go to the CCR register and you have to configure the 15th bit. So, which is already 0,
+
+so we need not to configure this actually.
+
+So, now here we have to calculate the value of CCR on behalf of standard mode frequency. And in the standard
+
+mode
+
+this is a formula to calculate the CCR.
+
+Right?
+
+So, we have already seen this formula.
+
+This is actually the serial clock
+
+and let's use Thigh is equal to Tlow.
+
+So, if Thigh is equal to Tlow of the SCL, then I can reduce this formula to this one.
+
+Right?
+
+So, let's add these formulas so Thigh + Tlow is nothing but TSCL, which is is equal to twice the CCR
+
+multiplied by TPCLK1.
+
+Right?
+
+So, that means CCR is equal to T SCL divided by 2 into TPCLK1.
+
+Right?
+
+Let's go into the frequency domain
+
+so TSCL means FSCL, and TPCLK1 means FPCLK1.
+
+Right?
+
+So, this formula we have to use in order to calculate the CCR.
+
+So, I just moved everything to frequency domain. So, that means the CCR value now is equal to first you
+
+have to get the frequency of the PCLK1 divided by 2 into the frequency of the serial clock which
+
+is given by the user.
+
+Very simple. Right?
+
+So, let's use that.
+
+The frequency is actually mentioned in SCL speed member element. That's it.
+
+So, that will actually give you the CCR value.
+
+All right.
+
+So, we just calculated the CCR value in the standard mode.
+
+So, now let's program this is CCR value,
+
+so let's store that first in the tempreg is equal to ccr_value and remember that this is actually
+
+uint16_t type. Right? and only 12 bits are valid actually. So because, if you go to the
+
+reference manual CCR is actually of 12 bits.
+
+So, that's why you have to mask out
+
+other bits except the first 12 bits, for that we can use 0xFFF. All right.
+
+That's it.
+
+So, we calculated and store the value of the ccr_value in the standard mode.
+
+Now, let's go and program the same thing for fast mode.
+
+So, remember that in fast mode first what you have to do is, you have to set the mode to fast mode in
+
+bit number 15. So, let's do that tempreg |= (1 << 15).
+
+So, the fast mode is configured
+
+and after that you have to program the duty cycle here.
+
+So, because there are 2 types of duty cycles, so which is supplied by the application.
+
+Right?
+
+Let's do that.So, tempreg
+
+OR is equal to
+
+so let's take the duty cycle
+
+which is right here, and you have to store that into 14th bit position.
+
+All right. Let's calculate the ccr_value. Before calculating the ccr_value
+
+you have to remember that there are 2 different formulas. Right?
+
+If DUTY = 0,
+
+that means the Tlow is actually twice the Thigh, so then you have to use these formulas.
+
+That means, CCR is equal to FPCLK1 divided by 3xFSCL. So, If DUTY = 1, then Tlow will
+
+be approximately is equal to one time 8 or one time seven times the T high
+
+in that case you have to use this.
+
+So, that means CCR is equal to FPCLK1 divided by 25 into FSCL.
+
+All right. Now let's calculate according to these formulas,
+
+now let's go back to the IDE and
+
+now let's first check
+
+what is the duty cycle.
+
+If the supplied duty cycle which is this one if it is is equal to is equal to I2C_FMDutyCycle
+
+2, then use the duty 0 formula that is CCR is equal to
+
+we can reuse the same equation
+
+just make this as 3.
+
+That's it. Else, what you can do is you can again reuse this formula
+
+and here it is 25.
+
+All right.
+
+And after that you can program the ccr_value in the tempreg.
+
+So, for that I can copy this.
+
+All right.
+
+That's set.
+
+So, that looks good.
+
+And after that at the end store the tempreg value into the CCR register. So, I can copy this line.
+
+All right.
+
+Select CCR. That's great.
+
+All right.
+
+So, we completed the CCR register
+
+now let's move forward.
+
+And the last register we have to configure is the T rise register which is very very important and
+
+we'll do that when we cover the T rise and other pull up resistor related discussion.
+
+So, that discussion we have not yet done
+
+and again we can come back to the I2C_Init
+
+and finally we can configure the Trise register.
+
+Great!
+
+Now let's end here,
+
+and let me quickly summarize what we did in the I2C_Init. Very very simple.
+
+First, we actually configured the CR1 register where we actually configured only 1 bit
+
+that is ACK control bit,
+
+this actually enables the ACKing or disables the ACKing according to the user selection.
+
+So, after that what we did was, we actually configure the FREQ field of CR2, because I2C uses
+
+the FREQ field to decide what exactly is the frequency of the ABP1. So, that information you have to feed
+
+to the FREQ field
+
+and we did that by calculating the APB1 clock by using this function,
+
+so then we actually store that value into the CR2 register. And after that we program the device
+
+own address, so this will be helpful if your device is acting as slave and then we can figure it into
+
+that OAR1 register.
+
+And after that we did very important calculations to produce the serial clock of the I2C peripheral
+
+that is CCR calculation. CCR stands for clock control register.
+
+So, configuring this field is really really important to produce different a serial clock speeds.
+
+So, there are 2 types of a speeds.
+
+One is standard mode speed and another one is fast mode. And for the standard mode you have to calculate
+
+the crc_value according to this formula,
+
+and then you have to store that value. And for fast mode
+
+there are 2 types of formulas depending upon the duty cycle.
+
+After that, we actually store the calculated ccr_value into the CCR field of the CCR register.
+
+And after that we have to do the Trise calculation and that we can do later.
+
+And with that note I would like to end this lecture and in the next lecture let's implement the
+
+I2C master send data API.
+
+We can implement an API for the master to send the data.
+
+I'll see you in the next lecture.

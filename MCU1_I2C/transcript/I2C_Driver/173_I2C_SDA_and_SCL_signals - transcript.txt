@@ -1,0 +1,75 @@
+Hey,well come back to the lecture.
+
+So, now in this lecture let's understand about the SCL and SDA signals. So, both SDA and SCL are bidirectional
+
+lines,
+
+so those are connected to positive supply voltage
+
+via
+
+pull-up resistors. When the bus is free,
+
+both the lines are held at high. The output stages of devices connected to the bus must have an open
+
+drain or open collector configuration. The bus capacitance limits the number of interfaces connected
+
+to the bus.
+
+We'll take a look into bus capacitance and a the formula related to the capacitance later in this section.
+
+We have to pay attention to this line that the output stages of devices connected to the bus must be
+
+open drain configuration.
+
+Now, let's understand how should be the pin configuration of the I2C. This block diagram
+
+you have already seen in the GPIO section. Right?
+
+So, this is a GPIO pin and remember that if you are using that GPIO pin for I2C communication, then that
+
+pin has to be in open drain configuration. Open drain configuration means you already know this P-MOS
+
+will not be present and only N-MOS will be there
+
+and you have to use a pull up resistor with that IO pin in order to get 2 states that is low and high.
+
+Right?
+
+So, whenever you want to connect a device to the I2C bus it's both the pins should be in open
+
+drain configuration.
+
+So, that is what the specification says. So,
+
+remember that for proper functioning of the I2C bus, pull up resistor value should be calculated according
+
+to the I2C formula and will discuss about that formula later in this section.
+
+So, need not to worry about that, but the takeaway from this lecture is this one. The output pin so the pins
+
+must be in open drain and you can either use internal pull up resistor or you can use external pull up
+
+resistor. Right?
+
+So, the same applies to the SDA line
+
+also. SDA also should be open drain with internal pull up enabled or external pull up connected. So, this
+
+is one of the important troubleshooting tip I would like to mention here.
+
+So, when the bus is idle, both SDA and SCL are pulled to Vdd.
+
+So, that means so whenever you think your I2C application is not working,
+
+the first check must be you have to measure the voltage across ground and SDA and SCL pins. It should
+
+show 3.3V. So, that is one of the important tip.
+
+So, whenever you face problems in I2C, probe the SDA and SCL line after I2C initialization
+
+remember. It must be held at high.
+
+All right. So, in the next lecture let's discuss about different I2C modes and I'll see in the
+
+next lecture.

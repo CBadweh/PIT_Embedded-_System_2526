@@ -1,0 +1,73 @@
+So, here instead of writing like this that is I2C_TXE_FLAG.
+
+So, what we can do is, we can first write flag, so then we can write the flag name that is TXE.
+
+So, naming like this will be helpful because when we do coding if we just type I2C_FLAG,
+
+then the eclipse will list all the options which are actually preceding with the word I2C underscore
+
+flag.
+
+So, let's use this naming convention for the flag macros. So, here it is
+
+so I have created all these definitions for the flags.
+
+Now let's go back to the driver.c and here flag SB. So, in this code we have to wait until this
+
+returns 1.
+
+Right?
+
+This function returns 1 or set.
+
+So, now let me use the not operator.
+
+All right.
+
+That looks good
+
+and now let's implement this function I2C_GetFlagStatus.
+
+Let me copy this.
+
+We can actually copy from a spi_driver.c. In the SPI driver
+
+we have SPI get flag status, so same thing we can copy. So, now
+
+let me go to the I2C driver.c and we can implement somewhere here at.
+
+All right.
+
+And here just change this to I2C, and here this is actually I2C_RegDef, and after that this
+
+is actually this one and here SR1 and the flag name.
+
+Great!
+
+So, our second step is completed.
+
+So, remember that what is a clear procedure for SB,
+
+so this you have to understand you can get from the reference manual in the SR1, let's check
+
+SB. The clear procedure is this one cleared by the software by reading the SR1, that we are actually
+
+doing here,
+
+we are reading their SR1. Right?
+
+So, and after that followed by writing to the DR register which we are going to do next in the address
+
+phase.So, that will automatically clear the SB flag.
+
+So, what is our third step?
+
+So, now send the address of the slave read write it set to 0.
+
+Great!
+
+So, total 8 bits.
+
+Let's do that in the next section.
+
+see if you can able to do this and I'll see you in the next lecture.

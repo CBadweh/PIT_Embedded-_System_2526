@@ -1,0 +1,79 @@
+Hey, welcome back to the lecture.
+
+So, in the previous lecture we almost finished I2C_EV_IRQHandling. Right? And here
+
+we actually created various events. Right?
+
+We actually used these macros but we haven't created them yet.
+
+So, we have to create them.
+
+Okay
+
+otherwise, compiler will issue errors.
+
+Now let's create some of the I2C application events. All right.
+
+Now let's go to the I2C header file and in the header file after this line, so let's create
+
+I2C application events macros.
+
+Alright. So, what are the events we are going to generate from the I2C driver, so let's check our
+
+ISR,
+
+this one. Right? TX complete. So, let's copy that TX complete and after that
+
+STOP, and after that we have I2C_EV_ RX_CMPLT. So, let's create that, that's it. Right?
+
+So, currently only this much so I currently give 0, 1, and for STOP I would give 2.
+
+Alright. So, now let's try to compile the code and let's see whether our code builds or not. So, it has
+
+couple of problem. So, the one important thing what we should do now is, we actually changed the prototype
+
+of I2C_ClearADDRFlag. Right? Prototype now looks something like this. Right? Now the input
+
+parameter is actually changed to I2C handle pointer variable. Right?
+
+So, that's why, so we have to make changes to our driver code wherever we have used I2C clear
+
+address flag. Let's go to the I2C driver and let's search for ClearADDRFlag. Alright.
+
+So, this is a function definition that's OK, and from here we called so now we have to change this to
+
+handle. And after that again we called here,
+
+so now it is no longer base address of the peripheral, so it's a pointer to the handle again here.
+
+So, let's change this as well
+
+and here as well.
+
+So, let's change this to handle
+
+and that's it. Great!
+
+So, now let's again try to compile the code, we again have many errors. Implicit declaration of the function
+
+close receive data. Right? So, that we have not yet implemented
+
+So, we'll implement that.
+
+And after that I2C handle undeclared.
+
+So, here there's a problem.
+
+So, this is actually not I2C handle
+
+it is actually actually pointer. All right so. Now it is.
+
+Okay.
+
+Let's again build the project, now the code build successfully.
+
+But we have 2 more functions to implement that is I2C close receive data and I2C close
+
+send data.
+
+So, we'll implement that in the next lecture.

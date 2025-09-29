@@ -1,0 +1,331 @@
+Hey welcome back to the lecture.
+
+So in this lecture let's talk about the SYS config EXTI control register configuration. if you look
+
+at this diagram.
+
+So here you can see that pin zero is actually delivering the interrupt over EXTI0 line but pin 0 of which
+
+port ? so that you have to decide that you can configure in the SYS config EXTI control register.
+
+That means pin zero of which port should take over this EXTI0 line that needs to be decided right ?
+
+So by default the EXTI0 line is held by GPIO port A.
+
+So if you want to assign this EXTI0 line to pin zero of some other GPIO port then you have to configure
+
+the SYS config EXTI control register so.
+
+So this register decides which GPIO port should take over this EXTI lines.
+
+Great !
+
+And let's move forward.
+
+There are four different EXTI control registers. EXTICR1 , CR2, CR3 and CR4.
+
+Now let's look at CR1.
+
+Here you can see that this register is of 32 bits. Only 0 to 15 bits are used and other bits are actually
+
+reserved. And this register controls 4 EXTI lines, EXTI0, 1, 2 and 3. and these are the values corresponding
+
+to different GPIO ports.
+
+Now let's understand this with an example. let's say you have a button which is connected to PD3.
+
+that is GPIO port D pin no 3.
+
+And as we know this can actually deliver interrupt over EXTI line 3. Right ?? But by default the EXTI
+
+line 3 will be owned by GPIO port A.
+
+So that why you have to change that configuration now.
+
+So what you have to do is you have to go to the respective bit field of the EXTI line number that is three.
+
+Right ?
+
+So this is a place for EXTI0.
+
+This is EXTI1 2 and 3.
+
+So here you have to change. So what you have to do is here you have to use this value 0 0 1 1 so that is
+
+you have to select the port D and if you do this the EXTI line number three will be owned by the port
+
+D so it's like that.
+
+All right. Now let's take another example. So let's say you have a button connected to PC13
+
+So PC13 delivers interrupt over EXTI line number 13.
+
+Right ?
+
+So each register is for only four EXTI lines.
+
+So that's why you have to go to CR2. CR2 is up to EXTI 7.
+
+So you have to go to the EXTI control register 4. Here is the position for 13. So we want PC 13 right?
+
+So you have to configure in the EXTI CR4 register. And here you have to place the value 0 0 1 3 sorry
+
+0 0 1 0. So that is you have to select the port C all right..
+
+So these settings you have to do in SYS config EXTI control registers in order to control the EXTI Lines
+
+by different GPIO ports.. Great !!
+
+So now we have to take care these things in our code in the GPIO init code.
+
+All right.
+
+So now how to identify the EXTI control register and how to program the value in appropriate position
+
+through our code.
+
+So let's find out how we can do that.
+
+Let's again take the example of PC13.
+
+So first what we have to do is
+
+You have to divide the PIN number by 4 and store the value in temp 1 integer division gives
+
+you 3. So this indicates that we have to configure the EXTICR[3].
+
+Or temp1 in our array right ?in our peripheral register.
+
+All right so we have to refer to the EXTI control register three.
+
+Right ?
+
+And after that again in another register temp2 we have to take mod
+
+That is 13%4 which gives us one.
+
+Right.
+
+So we have to go to the EXTI control register 4 which is this one and after that we have to refer
+
+to the first section.
+
+So this is a 0Th section.
+
+So this is a first section.
+
+So that means we have to multiply this by 4. So we will start storing the value from 4th bit onwards.
+
+Right ?
+
+And after that we have to find out which value we have to use.
+
+So this is a code, Code for ports.
+
+So the this is code for port A , this is a code for port B, this is code for Port C. So by using the base
+
+address of the peripheral
+
+We have to find out what is the code. So if the base address is GPIO A then it's code 0.
+
+If it is B then code is 1 like that and that code we have to store in these bit fields.
+
+Right ?
+
+I hope this is clear.
+
+Let me take another example.
+
+So for example let's say PA5 so temp 1 is equal to 5 divided by 4 which gives us 1. So 1 means we have to refer
+
+to the EXTICR[1].
+
+That means the second register that is this one and after that camp to temp 2 is equal to 5 Mod 4.
+
+That again gives you 1 and multiply 1 by 4 which gives you 4.
+
+So that means we have to start storing the value from here.
+
+So this is a position for EXTI5.
+
+Right.
+
+And here you have to store the port code.
+
+So that is zero.
+
+All right.
+
+Great.
+
+Now let's start coding this and here.
+
+First let's take uint8_t temp1 is equal to pin number.
+
+That is this one divided by 4 temp 2, this mod 4 that's it.
+
+And after that we have to configure SYS CFG Right ?
+
+So SYS CFG peripheral is not defined, so let's do that in the MCU specific header file.
+
+So I think we have to do.
+
+So I think we have to do here.
+
+All right.
+
+So SYSCFG so this is SYSCFG so which is already defined and after that here we have to give the base address
+
+of SYSCFG, SYSCFG so let's see whether it exists or not.
+
+Yes it is there great !!
+
+And after that let's go to GPIO drivers. here SYSCFG-> EXTICR[temp1]
+
+Right is equal to.. now.
+
+We have to store the port code.
+
+Right??
+
+We don't know what is a port code so let's use port code variable. later we can create that left shifted
+
+by temp 2 multiplied by 4.
+
+And the port code is not defined so let's do that so uint8_t portcode. so we can create
+
+a small macro GPIO base address to code macro. here
+
+We will send the base address of the peripheral which is this one and let that macro return the port code.
+
+So later we can implement this macro.
+
+No problem..and remember that before configuring the SYS config register you have to enable the clock.
+
+So SYS config clock enable peripheral clock enable so that you to use..All right..That's it. So this looks good.
+
+And now let's implement this macro.
+
+So this macro actually takes GPIO base address.
+
+So let's copy this and go to driver.h actually you can implement this in MCU specific header file
+
+instead of driver file why because you know this macro may be required in other drivers like
+
+I2C driver or SPI driver.
+
+So don't make it specific to GPIO so also make a generic.
+
+So let's keep that in MCU specific Header file so I would rather prefer that so you can even keep here.
+
+No problem.
+
+And if you think you require that macro in other headers I mean in other driver headers then you can
+
+move that macro to the MCU specific header file.
+
+But let me keep here in the MCU specific header file.
+
+So now let's create this macro define so it actually takes one argument let's call it as x.
+
+You can even create a C function to do this.
+
+No problem but I'm just using C macro so we can use C conditional operators here.
+
+So if x is equal to is equal to GPIOA. so if this statement is true then return zero.
+
+That is a port code. Else
+
+All right.
+
+So check for else check for x is equal to is equal to GPIOB
+
+So this is called C's conditional operators or ternary operations.
+
+We can learn this by just googling a C conditional operators.
+
+So this is called conditional or ternary operations in C.
+
+That's what I'm using here.
+
+So what's happening here is this expression will be evaluated if it is true then this will be returned.
+
+Otherwise the control will go and check this statement.
+
+And if this is true then this part will be returned or evaluated otherwise if it is false then it goes
+
+and checks another part which comes after this colon let's to repeat these statements for all the GPIO
+
+Ports we have, so here it is.
+
+So basically if is hard to understand.
+
+Don't worry you can use if and elseif ladder and you can write a small C function to return the
+
+code.
+
+That's it.
+
+You can also do that.
+
+All right.. So now let's go back and these errors actually got resolved here and that's it.
+
+We are done with our GPIO init API and let's see whether our code compiles or not.
+
+So let me go back to the project and let me save everything and let me just compile the code.
+
+There are no errors and in the next lecture let's complete this API that is IRQ config.
+
+This will have to do. Because.. so remember that in this diagram we actually enable the interrupt on the
+
+peripheral side all these are peripheral side right?
+
+And now we have to take care the processor side so that means we have to configure the NVIC registers
+
+to set the priority which is actually optional.
+
+Setting priorities actually optional.
+
+But that's OK.
+
+So we have to configure NVIC registers to set the priority for these IRQ numbers or given
+
+IRQ number and also we have to enable those IRQs because as I said by default the IRQ
+
+number will be disabled inside the NVIC and all those things we are going to do in IRQ config function.
+
+And now we actually need IRQ number definitions.
+
+So that's why the exercise for you right after this video is go to your MCU specific header file and
+
+create macros to define the IRQ numbers for different EXTI lines.
+
+For example here I have #defined various IRQ numbers.
+
+So this is the IRQ number the EXTI0 line.
+
+So this is for EXTI1
+
+So this is actually specific to microcontroller family. For all those microcontrollers which are based
+
+on F4 family.
+
+These macros will be same.
+
+These numbers will be same but your microcontroller families different then you how to verify these
+
+numbers by going through the vector table of your reference manual.
+
+So I would suggest you to verify these numbers by checking the vector table.
+
+So for the time being what I would do is I will just copy this section and I'll go to my MCU specific
+
+header file and let me find right place to keep this section.. all right.
+
+Now let me keep at the end. Before this. So let me keep here. So interrupt request numbers of this microcontroller
+
+we can keep.
+
+Update This section as we encounter more and more peripherals. alright.. so I hope you will do this and I'll
+
+see you in the next lecture.

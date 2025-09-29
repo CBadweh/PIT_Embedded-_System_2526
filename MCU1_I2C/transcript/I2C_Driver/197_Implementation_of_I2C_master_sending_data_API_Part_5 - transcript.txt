@@ -1,0 +1,65 @@
+Hey welcome back.
+
+So, now before testing our project, so let's build the code to see whether we encounter any error or not.
+
+First let's save everything.
+
+And after that what you can do is just go and build the project.
+
+So, there are a couple of errors actually.
+
+Now the problem is in my i2c_driver.h, I don't find that include guards.
+
+For example if I go spi_drive.h
+
+So, we have include guards here.
+
+Right ?
+
+So, these actually prevent inclusion of multiple definitions during the preprocessor stage of the compilation.
+
+So, these actually prevent multiple inclusion of the header file contents and whenever you create the header
+
+file that include guards will be added automatically by the eclipse.
+
+But surprisingly for i2c_drive.h I don't find here. That's a problem actually.
+
+So don't worry.
+
+So, if you face the same issue then what you can do is you can just go to your spi_driver.h
+
+or any driver.h and copy these two lines and go to the i2c_drive.h and here
+
+before includes you can keep that, and change SPI to I2C that's it. A small change you have
+
+to do.
+
+And after that at the end you have to put end if .#endif.
+
+All right.
+
+Now let's compile, so you can see that most of the errors vanished and now there are some errors here.
+
+What is this ?
+
+So, we have used the keyword twice.
+
+Let's remove that.
+
+And after that redefinition of dummy read.
+
+So, here there is a redefinition just remove this.
+
+That's it.
+
+Let's compile once again.
+
+All right.
+
+So, the code is compiled successfully.
+
+And check your project.
+
+You should also able to build without any errors.
+
+And I'll see you in the next lecture.

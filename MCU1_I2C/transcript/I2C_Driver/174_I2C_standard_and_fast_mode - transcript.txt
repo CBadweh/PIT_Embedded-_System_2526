@@ -1,0 +1,95 @@
+Hey, welcome back to the lecture.
+
+So, now there are 4 different I2C modes and the first one is standard mode. So, in standard mode
+
+the data rate will be up to 100 Kbits/sec
+
+and this mode id supported by almost all STM32 microcontrollers. In fast mode,
+
+you can achieve data rate up to 400 Kbits/sec
+
+and this mode is also supported by almost all STM32F4X microcontrollers.
+
+After that the third mode is Fast Mode +. In this mode you can achieve up to 1 megabits per second
+
+and this is supported by some of the microcontrollers of STM32F4 family,
+
+and you have to actually check the reference manual to see your microcontroller really support this
+
+mode or not.
+
+And after that High Speed Mode. In high speed mode you can achieve the data rate up to 3.4
+
+megabits per second
+
+and this is actually not supported by the F4x family of microcontrollers.
+
+I'm not sure about F3x and F7x etc..
+
+so you have to check the reference manual. So, in this course in our driver development and for all the
+
+exercises we will be using standard mode and fast mode. So, the fast mode plus is not actually covered
+
+in this course,
+
+and so we'll be using Standard mode and Fast mode. All right.
+
+Now let's move forward and lets understand about the standard mode. So, in standard mode communication
+
+data transfer rate can reach up to a maximum of 100
+
+kilo bits per second and standard mode was the very first mode introduced when the first I2C specification was released.
+
+So standard mode devices, however, are not upward compatible and they cannot communicate with devices
+
+of fast mode or above
+
+So, this you have to remember. For example, if you have a sensor which supports only standard mode, then
+
+it cannot communicate with the master which supports let's say fast mode.
+
+So, that interoperability is not possible.
+
+So, it is not upward compatible.
+
+So, most of the sensors a basic sensors like the RTC or the temperature sensors they actually come with
+
+standard mode.
+
+So, because they don't need a fast mode communication.
+
+All right.
+
+Now let's move forward.
+
+So, what are the features of the fast mode?
+
+So, in fast mode devices can receive and transmit data up to 400 kilo bits per second and fast mode devices
+
+are downward compatible and can communicate with standard mode devices in a 0 to 100 Kbits/s I2C
+
+bus system.
+
+So, standard mode devices, however, are not upward compatible,
+
+they should not be incorporated in a fast mode I2C bus system as they cannot follow the higher transfer
+
+rate and unpredictable states would occur.
+
+So, to achieve data transfer rate up to 400 kilo bits per second, you must put the I2C device into
+
+fast mode.
+
+OK. So, that means the configuring the mode is really important.
+
+So, when you are writing drivers. So, this is one of the important configurable item when you write the
+
+driver.
+
+So, you should allow the user to mention the I2C communication mode,either standard mode of fast
+
+mode.
+
+All right. Now, let's move forward and from the next lecture on wards let's discuss about the I2C protocol
+
+I'm going to cover some of the basics of ITC protocol and I'll see you in the next lecture.

@@ -1,0 +1,41 @@
+Hey welcome back to the lecture.
+
+So, in this lecture let's implement the I2C Master receive data. So, now the parameters of this API
+
+is actually similar to the master TX APIs.
+
+Send data API and so, here I have written couple of comments.
+
+According to that we are going to write the code.
+
+But, what I have planned is actually I will give you this file and you have to write the code and the
+
+comments actually describe what exactly you have to do.
+
+For example in the first case you have to generate the start condition.
+
+So, you have to call the corresponding API or function or you have to write the code.
+
+And after that confirm that START generation is complicated.
+
+So, exactly same like what we did for send data API.
+
+So, here there is a procedure to send only one data from slave. So, we actually have two sections here.
+
+If length is equal to 1, and if length is greater than 1.
+
+So, we take decisions differently in the I2C master receive data.
+
+And here I have written disable ACKing and other things.
+
+So, you have to write code according to the comments.
+
+Download this file and then you can copy this function to your driver source code and implement all the
+
+steps and after that in the next lecture I will show you how to implement this.
+
+And after that we can do the exercise.
+
+So, in the next lecture I will show you the correct implementation of this API.
+
+I'll see you in the next lecture.

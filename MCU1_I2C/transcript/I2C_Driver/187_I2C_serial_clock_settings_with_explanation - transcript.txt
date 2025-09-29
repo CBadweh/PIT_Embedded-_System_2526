@@ -1,0 +1,231 @@
+Hey, welcome back to the lecture.
+
+So, now in this lecture let's see what are the settings we have to do in order to get the desired serial
+
+clock out of the I2C peripheral.
+
+Let's go to our old trace.
+
+So, this is a trace of the I2C and here the first line is actually the serial clock
+
+and if we just measure this clock this is around 100 KHz. So, which is actually the standard
+
+mode. Right?
+
+So in order to get the desired clock in STM32F4x I2C peripheral,
+
+so 2 registers you have to configure. One is CR2 and another one in CCR. CR2 and CCR registers
+
+are used to control the I2C serial clock settings and other I2C timings like setup time and hold
+
+time. In I2C_CR2 register, you have to take a look into the FREQ field that is frequency field. In
+
+this field what you have to do is, you have to write the value of the APB bus clock of your microcontroller.
+
+I mean in the APB bus to which the I2C peripheral is connected. So, that information you have to store
+
+in this field. And after that you have to configure the CCR field of the I2C_CCR register. Let's go to
+
+the reference manual CR2 register. And here let's go to the FREQ field. All right. So, here it is.
+
+So,now the FREQ field is says that peripheral clock frequency. The FREQ bit must be configured with a APB
+
+clock frequency value, that means the APB bus where the I2C peripheral is connected.
+
+So, you have to use one among these numbers in order to initialize this.
+
+So, I2C hardware you will use this information in order to derive its various
+
+I2C related timing details according to the specification.
+
+So, configuring this field is very very important. So, all you have to do is just write this bit field
+
+with the value of the APB clock frequency, that's it.
+
+For example, in our case actually the APB1 bus will be used.
+
+Right?
+
+Because, that's where all the peripherals are connected
+
+I mean the I2C peripherals are connected.
+
+So, we will be using the internal HSI so which is 16MHz,
+
+so our APB1 will be 16MHz.
+
+So, that's why you have to load this CR2_FREQ field with a value 16 and that information will be
+
+used by the I2C peripheral
+
+and again with the help of CRC settings it can able to produce different frequencies of serial clock.
+
+All right.
+
+So, that you should note.
+
+So, now what are the things we have to do in the CCR field so that will understand with an example. Let's
+
+say the application demands something like this.
+
+So, you have to run the application in standard mode and generate the serial clock of 100KHz
+
+and the APB1 clock is 16 MHz.
+
+So, if you want to generate 100 KHz of serial clock in this case couple of steps you have to follow.
+
+The first one is configure the mode in CCR register.
+
+So, let's go to the CCR register
+
+and first you have to configure the mode I2C mode selection. So, which mode you want?
+
+So, standard mode or fast mode so that you have to select here in the 15th bit position. And after that program
+
+the FREQ field of the CR2 with a value of PCLK1.
+
+So, what is a value of PCLK1? which is 16 MHz which is given.
+
+So, you have to program 16 into the FREQ field. So, you have to go to the CR2
+
+and here you have to program 16. And after that calculate and program the CCR value in CCR field of
+
+CCR register.
+
+So, if you go to the CCR register there is a CCR field. And how to calculate this CCR value is given
+
+here.
+
+So, if it is standard mode than you have to follow this formula. Let's calculate.
+
+All right.
+
+So, we want the serial clock of 100 KHz.
+
+Right?
+
+So, that means the time period of the clock will be 10 microseconds.
+
+Right?
+
+This is Thigh will be 5 microseconds,
+
+so if we consider 50% duty cycle and Tlow will be 5 microseconds.
+
+Right?
+
+So, let's use this formula. So, Thigh is 5 into 10 to the power minus 6 is equal to CCR are into the
+
+time period of the APB1 clock. So, which is 16MHz
+
+and if we convert that into time then it would be 62.5 a nanosecond.
+
+So, CCR is equal to 5 divided by 62.5 into 1000.
+
+So, that would yield actually 80 or 0x50
+
+in hex.
+
+So, you have to program the value 80 into the CCR field of the CCR register.
+
+So, that's why to generate 100KHz what you have to do is, in the FREQ field you have to configure
+
+16 and in the CCR field you have to configure 80. Let's take another example. In FM mode, generate
+
+200 kHz serial clock frequency and APB1 clock is let's say 16MHz.
+
+So, you have to configure the mode in the CCR. So, the 15th bit of the CCR has to be changed to FM mode.
+
+And after that select the duty cycle of Fast mode SCL in CCR register. When you are working
+
+in fast mode you have to configure the duty cycle of the serial clock.
+
+There are 2 types of duty cycles are possible when the mode is fast mode.
+
+So, in STM32F4x I2C peripheral for standard mode Tlow maybe equal to Thigh. So, that is 50%
+
+duty cycle. But if you are using fast mode then you have 2 options here.
+
+That is option 1 and option 2. So, in option 1 Tlow will be twice the Thigh and in option 2 you have
+
+Tlow is 1.8 times the Thigh. So, 1 among these duty cycle you have to select when the
+
+mode is
+
+Fast mode. And also there are recommended values for Thigh and Tlow of the serial clock, and these values
+
+you can find in the specification document. Let's go to to the I2C specification and go to the table number
+
+10. So, now in the table number 10 so you can see the recommended value of Tlow and Thigh. So, Tlow means
+
+LOW period of the SCL clock and Thigh is the HIGH period of the SCL clock. So, when you are communication
+
+mode is standard mode, then the minimum requirement for the Tlow is 4.7 microseconds and
+
+for Thigh it is 4 microseconds. And in the fast mode, the minimum requirement for Tlow is
+
+1.3 microseconds and for Thigh it is point 6 microseconds.
+
+So, if we are using standard mode and if we use 50% duty cycle, let's say at 100 KHz,
+
+then Tlow will be 5 microseconds and Thigh will be 5 microseconds then it will surely meet these
+
+requirements. Isn't it?
+
+So, now let's go back to the CCR register and in the CCR register you have the 14th bit as duty. And here
+
+you can configure which duty cycle you want? And remember that when the mode is fast mode, if duty is
+
+equal to 0, then Tlow will be twice the Thigh.
+
+And if duty = 1, then you can reach the maximum serial clock speed in the fast mode that is
+
+400 KHz. So, if you want to reach 400KHz that is a maximum one so you have to keep duty is
+
+equal to 1 here.
+
+So, that means Tlow approximately is equal to 1.8 times the Thigh.
+
+So, that much amount of Tlow will be dedicated.
+
+All right.
+
+So, now let's get back to the exercise.
+
+All right.
+
+So, we covered these 2 points and after that program the FREQ field of the CR2 with the value of PCLK1
+
+that is 16, and then calculate and program the CCR value.
+
+All right.
+
+So, now let's consider these formulas. So, Thigh + Tlow is equal to if we add both the equations, then
+
+it would be 3 x CCR x TPCLK1. Right?
+
+So, that would give us how much?
+
+So, for example here we want 200 kilohertz.
+
+Right?
+
+So, 200 KHz means this period will be 5 microseconds into
+
+so it this will be divided by 3 and divided by TPCLK1 that is 62.5 nanosecond.
+
+That is the value of CCR. And this will give you around 26.
+
+So the value 26 you have to program into the CCR register. And if you use these equations that means
+
+if the duty is 1, then this divider factor will be 25 instead of 3.
+
+All right.
+
+So, that's about the serial clock settings.
+
+So, these settings you have to remember in order to produce different values of serial clock. In the next lecture
+
+let's complete the I2C_Init API.
+
+I'll see you in the next lecture.

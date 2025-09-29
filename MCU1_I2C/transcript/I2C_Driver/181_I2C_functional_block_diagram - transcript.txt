@@ -1,0 +1,87 @@
+Hey, welcome back to the lecture.
+
+So, now let's begin with the driver development task. I2C peripherals of your microcontroller.
+
+You have to open the reference manual to identify how many I2C
+
+peripherals are really present in your microcontroller. In STM32F407x microcontroller, so
+
+you can see that we have three I2C peripherals. All the three I2C peripherals are actually hanging
+
+on APB1
+
+bus.
+
+All right. Check your reference manual so you may be having only two or more than three.
+
+All right. Now let's move forward.
+
+So, this is a block diagram of the I2C peripheral.
+
+Now this block diagram is almost same in all the ST's microcontroller and even the diagram is similar
+
+across different microcontroller venders. Here you can see that we are mainly interested in SDA and SCL
+
+pins of the I2C peripherals.
+
+It also supports SMBA protocol, but that protocol is not discussed in this course.
+
+And so that's why you can see that there are two pins which goes out of this peripheral.
+
+One is SDA and another one is SCL.
+
+Both are actually preceded by the noise filter which is used to remove some glitches or some spikes
+
+etc.
+
+So, it is to smoothen the SDA and SCL signals. And as expected
+
+So, you can see that it, since is the half duplex communications so you see only one data register, so
+
+you don't see different buffers for transmission as well as reception.
+
+So, there is only one data register and that data register is connected to the data shift register
+
+as expected.
+
+So, the firmware or your code is going to write data into the data register and the data register
+
+contents then it will get copied into the shift register and then from that data will be transmitted
+
+to the external world. And whenever the data is received from the external world it comes all the way
+
+to the shift register.
+
+And when one complete byte is received the data will be copied into the data register and from there you
+
+can read the data.
+
+All right. And this I2C peripheral you can use in either master mode or in slave mode. And when you configure
+
+your I2C peripheral in slave mode then the slave address you have to store in this register, that
+
+is own address register.
+
+So, this is address register which is applicable only when the device is in slave mode.
+
+So, this is used to store the slave address.
+
+All right. And after that you can see that the SCL pin is actually connected to the clock control block
+
+and the clock control block is actually controlled by the register that is called as CCR, clock control
+
+register.
+
+Now you have to configure the clock control register in order to produce different frequencies on the
+
+serial clock pin and later will go and explore the clock control register. And as expected it also has
+
+a couple of controlled registers. So, actually it has to control registers in order to configure various
+
+parameters of the I2C peripheral. And also it has two status registers SR1 and
+
+SR2. So, all these things we are going to explore as we make a progress.
+
+All right. So, that's about the block diagram and from the next lecture onwards let's understand the API
+
+requirements and other configurable items which we need to create and i'll see in the next lecture.

@@ -1,0 +1,255 @@
+Hey, welcome back to the lecture.
+
+So, in the previous couple of videos, we discussed about the interrupts and we coded for the priority, we coded
+
+for enabling and disabling interrupt, right?
+
+So, in this lecture, let's discuss about what happens when interrupt triggers and also let's understand
+
+how ISR will get called
+
+and after that let's implement our final API that is GPIO interrupt handling. Remember that interrupt handling
+
+depends upon the peripheral.
+
+For example, in this case, the peripheral is GPIO, right?? which is actually a simpler peripheral.
+
+Because GPIOs doesn't have too much complexity, right??
+
+And the interrupt handling really depends on the peripheral.
+
+The way you write ISR varies when the peripheral changes.
+
+For example, I2C peripheral, so, I2C peripheral is actually much complex peripheral.
+
+So, the way you handle interrupt for I2C is very different from the way you handle for GPIO. So,
+
+in this case, how actually the interrupt triggers?? Let's say a button is connected to a GPIOA pin number
+
+0.
+
+And let's say you have configured that button trigger as falling edge and you have also enabled the
+
+interrupt here.
+
+And so, when you press the button, the EXTI engine detects the transition whether it is falling edge transition
+
+or rising transition.
+
+So, there is a edge detection block inside the EXTI block.
+
+And if it is falling edge and if the interrupt delivery is enabled, then interrupt will be sent over
+
+the EXTI line right to the IRQ number, associated IRQ number.
+
+So, when NVIC receives that interrupt, what it does is, there is one more register called PR that
+
+is Pending Register. So, there are 2 pending registers,
+
+remember, one is in NVIC and one is in EXTI.
+
+So, EXTI also has one pending register. So, there also it will get registered actually.
+
+So, that I explained in the earlier part of the course.
+
+So, here let's say it gets registered here. And after that, if the processor is not executing any ISR, then
+
+what happens is, the fixed vector address which is related to the IRQ number vector address which is related
+
+to the IRQ number will be accessed.
+
+So, what is the fixed vector address for IRQ 6 in this table??
+
+So, the fixed vector address for EXTI0 that is IRQ number 6 is this number, right??
+
+So, what processor does is, it actually reads a value which is stored in this address.
+
+So, that value is nothing but address of your interrupt service routine for that IRQ number. So, that means
+
+it's your responsibility to keep the address of your interrupt service routine function at this location,
+
+because the processor automatically checks this address.
+
+So, that's why it is called as fixed vector address. And after that, what processor does is,
+
+it will actually clear this pending bit and it will execute the ISR. So, when the interrupt is registered
+
+here and if the processor is already running an ISSR, let's say it is already running IRQ number
+
+10th ISR, then what happens is, priority will be compared. So, if newly arrived IRQ number's priority
+
+is greater than currently executing IRQ's interrupt, then the ISR execution of 10th IRQ number in this
+
+case, will be preempted and the ISR related to 6th IRQ number will be scheduled to run. That's how
+
+it works. Alright?? And also remember that even if you disable the interrupt reception on this IRQ
+
+number, the interrupt can still register, remember.
+
+So, even if you disable the interrupt, if interrupt arrives here, it will get registered in the PR.
+
+Only thing is ISR will not get executed. All right.
+
+So, now what are the action steps??
+
+so, if you want to handle the interrupt properly. The first action step is, implement the ISR function. So, implement
+
+ISR function,
+
+so, ISR function is nothing but just a C function.
+
+And second is very important.
+
+Store the address of your ISR at the vector address location corresponding to the IRQ
+
+number for which you have written the ISR, that's it. So, first one is implement the ISR function
+
+and the second one is store the
+
+address of your ISR at the vector address location corresponding to the IRQ number for which you
+
+have written the ISR.
+
+Alright, so now let's go back to our program. And now let's implement the ISR.
+
+Remember that, strictly speaking, ISRs are not actually implemented in the driver code.
+
+So, ISRs are actually application specific and they should be implemented in the user application that
+
+is in the application area
+
+like main.c and the ISR implemented in the application
+
+layer then should call the driver supported GPIO handling API in order to process that interrupt.
+
+And now if you go to the startup code of your project, so there's a startup code, right? which is right
+
+here and if you just browse through the startup code, you can see that the ISRs for various
+
+IRQ numbers already being implemented,
+
+you can see that. And those ISRs are attributed as weak ISRs and it is your responsibility to override
+
+those ISRs in your application.
+
+So, for example, for EXTI0,
+
+so, here you can see that the EXTI0_IRQHandler is already implemented which actually
+
+jumps to the default handler and the default handler is actually implemented somewhere in the beginning.
+
+And here you can see that the default handler is implemented here which is an assembly code which actually
+
+an infinite loop, you can see that it branches to infinite loop which is this one.
+
+So, it is in infinite
+
+loop, right?? So, the idea here is that the startup code will give you the weak implementation of ISRs.
+
+Whenever you need the real ISR implementation,
+
+you have to override that function in your application. For example,
+
+let's say I want to implement an ISR for EXTI0 interrupt. Then I will just search for EXTI0 IRQ handler,
+
+then I will just copy this name and I will go to my main.c and I will just implement this here.
+
+That's it.
+
+This is the ISR implementation.
+
+Remember that ISR doesn't take anything and it doesn't return anything. Inside the IRQ handler,
+
+you have to handle the interrupt.
+
+So, this is an ISR implementation.
+
+Now you have to handle that interrupt.
+
+So, for that, this IRQ handling API is given from the driver side.
+
+So, you have to call this function from 'main.c'. Alright??
+
+So, the driver API needs the pin number.
+
+So, you have to give the pin number from your application. So, whatever it may be,
+
+it depends on your application.
+
+You are expecting that intercept from which pin number.
+
+So, that pin number you have to mention and you have to call the interrupt handling API which is supported
+
+by the driver.
+
+And remember that the address of this function has to be stored at the vector address of the corresponding
+
+IRQ number.
+
+And that is also automatically taken care by the start up code.
+
+For example, if you browse this document, here you will see that vectors. And this vector table which is
+
+actually an assembly code which actually places the address of that function into the right vector address
+
+location.
+
+So, that is actually taken care by the startup code.
+
+So, that's why if you want to work with a microcontroller, always include its startup file in the project,
+
+otherwise your project will not work properly.
+
+And as per your application requirement, you have to override the ISR in which you are interested.
+
+So, when the interrupt occurs through the EXTI0 line, then control will not go to this IRQ handler,
+
+rather it comes to this IRQ handler. Why??? Because this is attributed as weak and that is already overridden
+
+in my main.c, isn't it??
+
+And the IRQ handling in this case would be clear the EXTI PR register, right?? corresponding to the pin
+
+number. So, if EXTI of PR and 1 left shifted by pin number, so, if the PR bit position corresponding to
+
+this pin number is set, then the interrupt is really pended, right??
+
+So, that's why clear that pending register bit. Clear.
+
+So, how do you clear??
+
+You have to write 1, right?? in order to clear
+
+in the case of PR. So, actually, the procedure to clear the pending register is actually writing 1.
+
+So, that's what mentioned in the register details.
+
+All right.
+
+So, the IRQ handling in the case of GPIO is very very simple, right??
+
+So, just 2 lines of code.
+
+All right.
+
+So, I think we have completed all the APIs. And now let's compile once to see everything is good or not.
+
+So, let's build the project.
+
+All right??
+
+The project is building and looks like it is error free.
+
+All right.
+
+So, there is one warning.
+
+So, we have to check that.
+
+All right! So, this is in actually main.c, no problem. Alright.
+
+So, the driver files have compiled successfully and in the next lecture let's do some interrupt related
+
+exercises and we'll see whether we really receive interrupt and process the interrupt or not.
+
+I'll see you in the next lecture.

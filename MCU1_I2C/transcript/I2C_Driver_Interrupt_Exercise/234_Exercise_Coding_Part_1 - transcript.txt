@@ -1,0 +1,379 @@
+Hey welcome back to the lecture.
+
+So, now let's create the new source file for the slave exercise.
+
+Now let me just copy this old source file and let me paste here.
+
+So, let me change the name to 013i2C_slave_tx_string.c
+
+All right.
+
+So, this is a slave code.
+
+Right ?
+
+So, now we have to modify this code.
+
+So, first of all let me remove all these semi hosting related code and So, GPIO init is required.
+
+All these are required and I2C IRQ configurations.
+
+This is actually required because the slave application is always in interrupt mode.
+
+So, that's our design and peripheral control is required this manage.
+
+Acking is required.
+
+So, I'm going to remove all these other codes.
+
+All right. And handlers are required and the application callback is also required.
+
+But let's remove all these codes.
+
+All right fine.
+
+So, this is required.
+
+This is required and for the I2C1_GPIOInits
+
+Make sure that the pull up is activated, which is very important. and after that let's remove this code
+
+and this flag is not required.
+
+Let's remove that. So, the slave address is 68 in this case so let's remove this.
+
+All right.
+
+And after that the buffer.
+
+So, let's have some message here.
+
+This is not receive buffer.
+
+This is the actually TX buffer. Let's include some message. So, let me mention STM32 slave mode
+
+testing.
+
+All right. So, make sure that the total number of bytes in a message doesn't cross 32 bytes.
+
+So, that's the limitation of the wire library of the Arduino code.
+
+And later you'll understand how to receive more than 32 bytes or how to send and receive more than 32
+
+bytes and for the time being let's make sure that the length doesn't cross 32 bytes.
+
+All right. So, here we are actually enabling the IRQs isn't it ? and now let's investigate what exactly
+
+we are doing and I2C inits. So, in the I2C init.
+
+So, now
+
+This field is very much important.
+
+That is a Config.I2C_deviceAddress. Now the slave address has to be configured here so that is actually
+
+my address.
+
+So, my address is not defined so let's define that. MY_ADDR is nothing but the slave ADDR.
+
+All right.
+
+So, 68 is the address of the slave. all right.
+
+So, now after that in the main code so you can see that we are actually enabling IRQs here, but we
+
+are not enabling interrupt control bits in the I2C CR2 register.
+
+Right.
+
+So, that is important.
+
+So, without enabling those interrupt control bits interrupt will not be generated for I2C events.
+
+or I2C errors.
+
+So, now let's create one API for that.
+
+So I will call that API as I2C_EnableDisableCallbackEvents
+
+So, let's give this API name.
+
+So, what it does is actually it actually enables the interrupt control bits in the CR2 register. Now
+
+for this you have to send the base address of the I2C peripheral and let's send another argument
+
+here.
+
+Let's say enable. and let's call it as SlaveEnableDisable CallbackEvents. let's use this API dedicatedly
+
+for slave mode.
+
+All right.
+
+So, now let's copy this and now let's go to the driver.h
+
+All right.
+
+So, we can go to the other peripheral control APIs now lets paste here all right.
+
+So, here I can mention enable or disable all right.
+
+This is nothing but I2C RegDef
+
+Right.
+
+So let's mention that.
+
+Great.
+
+Now let's implement this function.
+
+So, now let me implement here in the driver.c and if this is equal to enable then you have to enable
+
+all these controll bits.
+
+Right.
+
+So, else you have to disable that's it. all right.
+
+Now let's go to our application.
+
+So, slave actually enables the callback events here.
+
+And the peripheral will be enabled here and the ACK will be enabled here.
+
+And after that slave just hangs in the infinite while loop that's it.
+
+And whenever a request is received or events happen the application event callback will be called. Now
+
+lets code here, if application event is equal to is equal to I2C event data request.
+
+So, then what does this mean.
+
+If the control comes over here Master wants some data.
+
+Right ?
+
+The slave has to send it. Now elseif so if it is is equal to data receive so then data is waiting for
+
+the slave to read right ?
+
+Slave has to read it and elseif if it is is equal to errors AF ACK failure.
+
+So, this happens only during slave transmission.
+
+It will not happen in slave reception.
+
+So, master has sent the NACK. So, slave should understand that master doesn't need more data. And last one
+
+event which you have to implement is error.
+
+It's not an error.
+
+I2C event
+
+Stop right ? So, this happens only during slave reception.
+
+So, Master has ended the I2C communication with the slave. So, the slave should conclude that master
+
+has ended the I2C communication with the slave.
+
+All right. So, the master actually first sents the command code 0x51 to read the length right ?
+
+One byte of length.
+
+And after that master sends
+
+Command
+
+Code 52 to read the complete data from the slave.
+
+So, this is our procedure right ?
+
+So, we have to code according to this.
+
+All right.
+
+So, now let's go to the code.
+
+So, now first master actually sends a command code to the slave.
+
+Right.
+
+So, that is nothing but read for slave.
+
+Right.
+
+So, that is actually slave data receive.
+
+So, whenever data receive happens.
+
+Slave actually store the command code.
+
+So, command code.
+
+So, now let's use I2C slave receive data.
+
+All right. So, slave actually first receives.
+
+Command
+
+Code.
+
+So, now let's create this variable.
+
+So, this must be global variable. Because you can see that this function actually exists without hanging
+
+anywhere right.
+
+So, that's why you cannot create this locally. So now let's create a globally.
+
+All right.
+
+So, slave actually recieves the command code here.
+
+And when Master does read transaction OK.. that is actually data request for the slave isn't it ? So, this
+
+block will get executed.
+
+So, master has sent the code that is let's say 0x51.
+
+That is to read the length.
+
+Right.
+
+So, after that master executes the read transactions.
+
+And this block will get executed.
+
+Here. So if
+
+command code
+
+If it is equal to is equal to 0x51 then send the length information to the master. So, we can use
+
+I2C slave
+
+Send data and the data will be string length of the TX buffer.
+
+Else if commandCode is equal to let's say 0x52.
+
+Then it is actually send the data or send the contents of TX buff. It is double ==
+
+Alright. So, now let's again use this send API. So, here instead of this we have to use TX buff
+
+Right ?
+
+Tx_buff off now let's use one count variable, let's say Cnt and you have to increment that, alright.
+
+now let's define these variables, these variables must be global otherwise you can also do static. Let's
+
+use a static key word alright ?
+
+So, static uint8_t Cnt is equal to zero.
+
+All right, the static variables are actually kind of global variables. So, the memory for these variables
+
+will not be allocated in the stack. So, the memory will be allocated in a global space. So, that's why even
+
+if this function exits memory for these variables will not be deallocated and we can access it from this
+
+function.
+
+The only thing is you cannot access these variables from other functions.
+
+So, even though they are actually in global space you cannot access these variables from other functions
+
+So, because we have used a static keyword here all right.
+
+So, Static means private to that function but memory allocated is actually in global space all right.
+
+Now let's say a slave has received the command code 51 and lets say the slave has sent the length information
+
+to the master. Once that happens.
+
+Actually the acknowledgement failure happens that actually indicates the completion of a slave TXing
+
+Right.
+
+So, once that happens what we can do is here we can invalidate this command code.
+
+So, let's put some data here.
+
+0xFF
+
+So, this is invalidating and also we can reset this variable that is cnt to 0.
+
+All right. all right.
+
+So, that's how the slave actually responds to the various I2C transactions and remember that all
+
+these steps what I have coded here I mean all of these events how I processed depends upon different
+
+types of I2C transactions.
+
+You have used your application. Now, this I have coded purely with respect to these transactions.
+
+So, you have to keep this in mind. For example
+
+Now let's understand, first what Master does.
+
+It actually generates I2C transactions to read the one byte length information right ? So first
+
+This will be generated that is sending command to slave.
+
+So, in this application in the slave code.
+
+So, this will be executed.
+
+So, slave actually stores the command code which is received.
+
+So this is actually write
+
+I2C transaction. So, write a results in read for the slave.
+
+Great !
+
+Now after that this is master reading.
+
+So, this is read transaction right ?
+
+So, master reading response from the slave, that is length right ?
+
+So, read results in data request in slave.
+
+So, this part. Since it has already sent the command code as 51 so this block will be executed and master
+
+will read the length after that master generates two more I2C transactions to read length bytes of
+
+data from the slave.
+
+So, for that first is write.
+
+Right ?
+
+So, Master sends the command code which is 0x52.
+
+So, again this block will be executed and now the command code will be 52 right ? and after that
+
+Again read transaction will be initiated by the master.
+
+All right.
+
+And this block will be executed. Send the contents of the Tx buff.
+
+So, whenever TXE is set this block will be executed and slave sends the data byte by byte to the master. All right.
+
+So, when this transmission ends the AF failure will be generated.
+
+And this block will get executed.
+
+So, here we just invalidate the command code and we just reset the count variable.
+
+That's it.
+
+All right.
+
+So, in the next lecture let's test this and let's see whether our slave code really responds to the Masters.
+
+I2C transactions or not. I ll see you in the next lecture.

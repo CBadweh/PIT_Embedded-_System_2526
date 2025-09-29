@@ -1,0 +1,93 @@
+Hey, welcome back to the lecture.
+
+So, in this lecture let's understand about the data validity. So, remember that the data on the SDA
+
+line must be stable during the high
+
+period of the clock. The high or low state of the data line can only change, when the clock signal on the SCL is
+
+low.
+
+So, this is one of the important thing you have to remember.
+
+So, for example, if you take a look into this wave form this is SCL and this is SDA.
+
+Now you can see that the data is stable. So, when the clock is high, So data is only changing.
+
+This is a change of data.
+
+So, change means either from 0 to 1 or 1 to 0.
+
+That change should happen only when the clock is low.
+
+So, In I2C the data should not change when the clock is high.
+
+So, when the clock is high the data must be stable. So, but this is not applicable for a start and stop
+
+conditions.
+
+So, that's why any transition which happens when the clock is high is detected as either start or stop
+
+condition.
+
+So, that's how the data transition and a start and stop transition is differentiated in I2C.
+
+You should remember that the data change will happen only when the clock case low.
+
+So, that's why if you go and take a look into this trace once again and you can see that this is a data
+
+transition right ?
+
+So, this is a data transition from low to high.
+
+And look here when it is happening it is happening only when the clock is low.
+
+Right ?
+
+So, you can see that no where in this trace data change is happening when the clock is high.
+
+For example let's consider this transition.
+
+So, this transition is from high to low isn't it ?
+
+And that is happening when the clock is low.
+
+So, that's why the data transition on the SDA line happens only when the clock is low.
+
+You should remember this.
+
+And exception is start and stop conditions. So, start and stop condition.
+
+Transition happened only when the clock is high.
+
+So, that's how data transition and signaling transition that is start and stop are differentiated.
+
+All right.
+
+So, that's important concept of the I2C.
+
+And I would suggest you to remember this diagram, So this diagram is very very important and this is
+
+one of the important interview question. So, because most of the time the interviewer will ask you to draw
+
+the wave form of the I2C signalling.
+
+And in that case if you'll write this much then it is really good because this is a very beautiful way
+
+form which says that the data line must be stable.
+
+Whenever SCL is high.
+
+And data is allowed to change only when the clock is low. So the data validity is decided only when the
+
+clock is high.
+
+Great !
+
+And in the next lecture, let's address some cases are master writing data to the slave and master reading
+
+data from the slave.
+
+And let's see how we can achieve that in the I2C protocol.
+
+And I'll see the next lecture.

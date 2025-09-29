@@ -1,0 +1,155 @@
+Hey welcome back.
+
+So now let's continue our coding.. here configure the FTSR.
+
+Right ?
+
+So FTSR is a register of EXTI.
+
+So let's use the EXTI peripheral and let's dereference that.
+
+So we don't have a EXTI peripheral definition right?? in the MCU specific header file.
+
+Now lets create that, So we didn't do actually.
+
+So let me do that here.
+
+# define EXTI and let's give the same definition here.
+
+So let's give the EXTI base address. Again EXTI base address is already defined.
+
+No problem.
+
+All right.. And how about EXTI peripheral structure so EXTI peripheral structure is not yet created.
+
+All right.
+
+So we have to create that.
+
+Otherwise it will not be able to access its registers.
+
+Let's create here.. let me just copy this and let me do it here.
+
+The peripheral register definition structure for EXTI.
+
+All right.
+
+So let me create a structure.
+
+All right.
+
+So I just created the EXTI peripheral register definition structure.
+
+And now let's go back to the code and now let's go back to the driver.c and Here EXTI Dereference
+
+and select FTSR. So I'm not able to access that FTSR.
+
+I don't know why.
+
+Let's check..
+
+Oh I'm sorry.
+
+So here we did a mistake.
+
+So this must be EXTI_RegDef Right ??
+
+All Right..
+
+So that looks fine.
+
+Now let's go back to the driver.c and here
+
+Let's continue our coding so EXTI select FTSR bit wise or equal to now we have to set a bit in
+
+FTSR register which is corresponding to the pin number provided.
+
+Right.
+
+So that's why one left shifted by pin number that's it and make sure that the corresponding bit in the
+
+RTSR is cleared.
+
+Because we just want falling edge detection.
+
+That's it.
+
+Right.
+
+So maybe accidentally or maybe due to the other configuration previous configuration the RTSR the
+
+corresponding bit in RTSR are maybe set.
+
+We don't know.
+
+So that's why it's better to clear the RTSR bit. So clear the corresponding RTSR bit. So How
+
+to do that?
+
+So just select copy and paste and is equal to negation of right.
+
+So just select
+
+RTSR.
+
+That's it.
+
+And the same thing you had to copy here as well.
+
+But you had to change this to RTSR And this to
+
+FTSR.
+
+That it.
+
+And after that you have to copy this once again sorry here.
+
+Configure the RTSR And after that.
+
+So you had to configure these two lines once again and you had to paste here and here you have to set
+
+both RTSR And FTSR that's it.
+
+Great !!
+
+So we finished all these modes and then after that we have to configure the GPIO port selection in
+
+SYSCFG_EXTI control register and I will tell you that in the next lecture.
+
+Now, Enable the EXTI interrupt delivery using IMR.
+
+So this is very simple.
+
+So we can straightaway do this.
+
+So what we can do is you can just select EXTI here and select the IMR and that's it. Bit wise or and
+
+just enable so you have to enable the interrupt delivery on that EXTI line corresponding to the pin number
+
+provided that's it.
+
+And this step will do in the next lecture and I will see you in the next lecture.
+
+All right .. So before ending this lecture I would like to give you a small assignment.
+
+So here we are going to configure the SYS configure registers in the next lecture.
+
+So let's go to the reference manual.
+
+So here you can see that the SYS configure registers are actually part of the APB2 bus.
+
+So this peripheral is actually hanging on APB2 bus and you have to enable the clock for it.
+
+So create a clock enable macro in the MCU specific header file.
+
+So I have already created I think..yeah here it is.
+
+So this clock and able macro must be present.
+
+And after that also create the peripheral register definition structure for SYS Config peripheral.
+
+So currently it is not present.
+
+So I'll quickly create that and I will return in the next lecture and I hope you will do that and I'll
+
+see in the next lecture.

@@ -1,0 +1,79 @@
+Hey, welcome back to the lecture.
+
+So, in this lecture, let's see how we can make slaves sending more than 32 bytes of data to the Aurdino
+
+master. So, far this, you have to modify the uglier application. so here I have created new application
+
+and application name is
+
+014i2cslave_tx_string2.h
+
+So, now here this Tx buffer has large number of data approximately it is around 400 bytes.
+
+Now, let's see, how master can fetch this data from the slave using I2C transactions. For this application,
+
+I have modified the I2C transactions and let me explain those modifications.
+
+All right??
+
+So, first, master actually executes I2C transactions to read a 4 bytes of length information. So, now
+
+the length information will be of 4 bytes instead of 1 byte which we used in the previous exercise.
+
+So, first, master sending command to slave. So, Master actually sends 0X61 command to the slave
+
+to read the length information and for that master then executes data read I2C transaction
+
+and slave actually replies 4 bytes of length information.
+
+For example, if the length is let's say 0x480, then slave actually replies something like this.
+
+So, four bytes of length information will be returned to arduino code.
+
+All right?? And after that, I2C transactions to read length bytes of data from the slave.
+
+And after that, the master actually sends 0 x 52 command to read the data, isn't it?? And if the length
+
+is lesser than or equal to 32 bytes, then only one read transaction will be performed by the master. If
+
+length is more than 32 bytes, then more read transactions will be executed by the master.
+
+For example, let's say the length is 65, then in one read transaction, master actually reads 32bytes
+
+So, here 32 bytes and it actually needs one more read transaction to be executed to read the last one byte,
+
+like that. So, these codes are actually implemented in 014 application and so in the arduino side, you have
+
+to use this application 003ICMasterRxStringLen.
+
+So,now let's test this application.
+
+So, first, I will download this code into the Master, that is our Arduino board.
+
+All right?? So, it is downloaded and now let'us go back to the application.
+
+So, here it is.
+
+This is a Tx buffer which has very huge data.
+
+And let me just compile the code and let's open the serial
+
+monitor and large send s all. Yes!!
+
+Here it is.
+
+So, it actually fetched four hundred and six bytes of data from the slave.
+
+All right!! So, try this at your desk and let me know if you face any issues and please go through the
+
+code which is there in the application 014.
+
+So, this is actually the modified version of 013.
+
+So, both are almost same, but some modifications have been done. Because, we have changed in number of bytes
+
+for the length, isn't it??
+
+So, that's why. All right??
+
+So, I hope you will try that and I'll see you in the next lecture.

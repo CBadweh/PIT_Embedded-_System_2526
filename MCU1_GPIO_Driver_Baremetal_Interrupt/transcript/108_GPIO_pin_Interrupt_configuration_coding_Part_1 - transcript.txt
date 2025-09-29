@@ -1,0 +1,141 @@
+Hey welcome back to the lecture.
+
+So from this lecture onwards let's give support for interrupt capability in our driver source file.
+
+Great.. So in the GPIO init
+
+Actually we have to complete this part that is configuring the interrupt mode.
+
+And after that we have to complete these two APIs.That is
+
+IRQ config, actually this API is to do the configuration of NVIC registers of the Arm cortex Mx processor.
+
+and this will be the IRQ handling. All right..
+
+In this lecture let's concentrate upon this part and if we see all the modes of our GPIO pin.
+
+So we have completed up to here.
+
+Right ?
+
+So these three are actually interrupt modes so we can configure GPIO pin in interrupt mode with falling
+
+edge detection rising as detection and rising as well as falling edge detection.
+
+So these are the three combination of modes in interrupt mode and in earlier part of the course
+
+we actually discussed about the interrupt design the EXTI registers and various other things.
+
+Right ?
+
+I want to give you a quick overview about the things we discussed in earlier part of the course.
+
+So remember that.
+
+So this is actually the STM32f4x GPIO pins interrupt delivery to the processor. So GPIO pin
+
+0 delivers its interrupt on EXTI0 line. One delivers interrupt on EXTI1 line. right ?? and remember that
+
+all the EXTI lines from five to nine are actually tied together and they are actually connected to single
+
+IRQ number that is 23.
+
+So this information you have to obtain from the vector table.
+
+Right ?
+
+And all the EXTI lines from EXTI10 to 15 are tied together and they are connected to a single IRQ number
+
+that is 40. and there is a EXTI block in between and that block does edge detection and it also gives
+
+you a registers to enable and disable interrupt delivery to the processor and these IRQs are actually
+
+disabled by default.
+
+So you have to configure the NVIC registers in order to enable or disable the interrupt reception on
+
+those IRQ numbers.
+
+So you have to remember all these points.
+
+And here which GPIO port it is.
+
+So this pin zero is of which port so that is actually decided by the SYSCFG_EXTI control register.
+
+So this also we have to configure in our GPIO init API.
+
+All right.
+
+So let's move forward.
+
+All right, So GPIO pin interrupt configuration to implement successfully the interrupt modes on a GPIO
+
+pin you have to follow these steps.
+
+Remember that these steps are very much common to any microcontroller you use.
+
+First thing is make sure that the pin is in input mode.
+
+So the pin must be an input mode because you are receiving an interrupt right ?
+
+And also after that configure the edge detection or edge triggering like which Edge Trigger you want
+
+I mean rising and falling or both rising as well as falling edge.
+
+So this you to configure so this we do in the EXTI register right ?
+
+And after that enable interrupt delivery from peripheral to the processor.
+
+So this you have to do in peripheral side.
+
+So that means this is a peripheral side.
+
+Right ?
+
+So here you have to do..In the EXTI register. By using interrupt mask register of the EXTI.
+
+And after that identify the IRQ number on which the processor accepts the interrupt from that pin.
+
+So that means for example in this case if you want to send interrupt from this pin then you have to
+
+identify the IRQ number.
+
+This we do by vector table.
+
+Right ?
+
+And after that configure the IRQ queue priority for the identified IRQ number.
+
+So this you have to configure in the NVIC register.So NVIC has priority register. So there we have to do
+
+it and after that enable interrupt reception
+
+On that IRQ pin. Again you have to touch the NVIC register in order to enable the IRQ number. Because
+
+by default all the IRQs are disabled and after that implement IRQ handler.
+
+All right.. So if you are confused don't worry.
+
+We are going to implement this step by step in our code and your doubt will get clarified.
+
+Let's get into the ide and let's go to the GPIO init and here.
+
+If the mode is equal to is equal to GPIO_MODE_IT falling edge then the first thing what you have to do
+
+is configure the falling trigger selection register.
+
+Right ?? All right..
+
+After that else if mode is equal to RT
+
+Then you have to configure the RTSR else if this is equal to RFT then configure both the
+
+register.
+
+So here you are to do configure both FTSR and RTSR.
+
+OK. So after that what you have to do is configure the GPIO port selection in SYSCFG_EXTI
+
+Control register. So don't worry I will explain this. After that you have to enable the EXTI interrupt
+
+delivery using IMR, that is interrupt mask register. So let's code all these things in the next lecture.

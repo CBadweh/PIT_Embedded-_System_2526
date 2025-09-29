@@ -1,0 +1,609 @@
+Hey, let's do this exercise now.
+
+That is we have to connect an external button to PD5.
+
+So, now you already know how to connect an external button. And you can toggle the LED, you can toggle the
+
+onboard LED, no problem. So, but LED should be toggled whenever interrupt is received from the
+
+button press and the interrupt should happen only during falling edge of button press.
+
+Great!!
+
+So, when we press the button what happens?? When we press the button,
+
+the pin is actually pulled to low, right??
+
+That is to ground.
+
+So, that means pulling to ground means what?? It is actually high
+
+to low transition.
+
+Right??
+
+So, that is nothing but falling edge transition, right??
+
+Great!!
+
+So, let me go to the IDE and let me just copy this source file and let me paste here and let me change
+
+the name. So, the name will be "005button_interrupt.c"
+
+All right.
+
+Now let me just exclude this file.
+
+All right.
+
+So, let me just rename this file button.
+
+All right.
+
+And now let's use PD5.
+
+So, we want button code actually.
+
+So, LED we can use PD12,
+
+no problem.
+
+So, let me use PD12 in push pull configuration.
+
+All right. And after that let's copy some button code.
+
+So, let me copy this button code.
+
+So, let's paste here.
+
+Let's create this variable. SO, LED is PD12.
+
+This is fine.
+
+And button is PD5, right??
+
+So, PD5.
+
+OK??
+
+And this can be anything.
+
+So, no push-pull/ pull-down.
+
+Right??
+
+So, we have to give pull-up,
+
+right??
+
+So, let's give pull-up.
+
+Alright.
+
+And after that this is GPIOD.
+
+All right.
+
+So, now here mode is actually not IN, but it is interrupt mode, right??
+
+So, interrupt falling edge,
+
+right??
+
+So, you have to select interrupt falling edge.
+
+All right. So, because we are now using this GPIO to trigger an interrupt whenever the button is pressed.
+
+All right.
+
+So, after this, what we have to do is, we have to do the IRQ configurations,
+
+right??
+
+for this pin. We have to enable its IRQ. For that,
+
+we have given the API GPIO IRQ
+
+IRQ interrupt config, right??
+
+So, this you have to use. Priority is not required, because it's optional.
+
+Right??
+
+So, priority is used when there are more interrupts are involved.
+
+So, here there is only one interrupt is involved. So, need not to configure the priority. If you do also, no problem.
+
+All right.
+
+So, let's use interrupt config, right??
+
+So, in our API, what is the first argument??
+
+IRQ number and enable or disable, that's it. Very simple.
+
+So,
+
+Sorry.
+
+So, let's use IRQ
+
+EXTI, which one?? PD5 will send its interrupt over EXTI5.
+
+Right??? So, I have to select this one, EXTI9_5. And after that, we have to enable that IRQ.
+
+.
+
+So, lets give enable.
+
+Great!!
+
+So, let's also configure the priority.
+
+Actually it is optional,
+
+that's OK.
+
+But let me also configure the priority. So, for the priority, you have to send IRQ number and priority levels.
+
+So, IRQ number is again this one.
+
+And priority is you can send any value between 0 to 15, right???
+
+So, I can send let's say 15. So, instead of writing 15 like this, it will be good if you can give the macros
+
+for that, like
+
+"NVIC_IRQ_PRIO15". So, we can hash defined these macros in our MCU specific header file. So,
+
+let's go to the MCU specific header file and here there are various macros for IRQ number. So, create
+
+another section here for IRQ priority. So, PRIO0 means 0. So, like that.
+
+So, I hope you'll complete this macro, but currently, I'll use PRIO15 as 15.
+
+All right.
+
+So,
+
+So, this is actually macros for all the possible priority levels. Alright, 0 to 15.
+
+Let me go to my application. So, now I have to implement the ISR, right???
+
+So, let's implement the ISR. So, let me remove this code.
+
+Now let me implement the ISR. So, to get the ISR name, you have to go to the startup file, right??
+
+So, go to the startup file and just go to the vector table and select the appropriate name.
+
+So, we are using EXTI9 to 5.
+
+So, I have to use this one, IRQ handler.
+
+So, let's copy that name.
+
+Go to your application and implement.
+
+All right.
+
+So, this is the ISR and here we have to call the driver supplied GPIO interrupt handling API.
+
+So, we have that.
+
+So, GPIO_IRQHandling() and you have to send the pin number here. Which pin you are using?? We are using
+
+GPIO pin number 5.
+
+Right??
+
+So, let's use this macro right here.
+
+All right. So, our driver will handle that IRQ handling.
+
+All right.
+
+So, after that,
+
+so, our goal is to toggle the GPIO,
+
+right?? So, you can write that code here itself,
+
+no problem.
+
+I can call GPIO toggle output pin and I can call GPIOD pin number 12. All right, so now let's compile
+
+this code and now let's download the code.
+
+All right.
+
+And now let's hit the button and whenever we press the button, the onboard LED should toggle.
+
+And here it is,
+
+the code is not at all working.
+
+All right.
+
+So, now we have to debug, why this is not working.
+
+First of all, let's see the interrupt is triggering or not.
+
+So, what I will do is, I will just go to the debug mode.
+
+Now, in order to send the eclipse to debug mode, what you have to do is, you have to right click on the
+
+project, select Debug As
+
+and after that select this, Ac6 STM32 application. Now, the IDE will go to the debug mode. Click yes here.
+
+So, this will open the debug perspective.
+
+Now, this is a debug perspective.
+
+And if you want to go back to the C and C++ perspective, then you have to click over here.
+
+So, it will take you to the C and C++ perspective. So, you can go to the debug mode here and here you can
+
+see that the code is actually halted here in the main.
+
+I have set a couple of breakpoints here.
+
+So, now let me remove all these break points.
+
+So, let me just remove this and remove this as well.
+
+So, the debug perspective actually keeps one breakpoint automatically in the main, in the first line of the code,
+
+so the devil perspective does this automatically.
+
+So, later you can keep the breakpoints wherever you want. In order to test this application,
+
+let's see whether we are really getting interrupt or not.
+
+So, what I would do is, I'm going to keep the breakpoint in the ISR. So, go to the ISR,
+
+And here you can see that this blue strip,
+
+right?
+
+So, here you can double click. For example, on the line 63 in this area,
+
+I'm going to double click and that breakpoint is insulted
+
+and here you can see that the breakpoint window is also showing that at line 63 a breakpoint is inserted.
+
+All right.
+
+Now let's hit run.
+
+Now the code is running.
+
+And if you stop this code execution, so you can click over here.
+
+suspend,
+
+and here you can see that the code is actually currently hanging in infinite while loop.
+
+So, that is what expected.
+
+That is correct.
+
+Right??
+
+All right. Now, code is not running, remember, because I actually suspended the execution.
+
+So, the code is currently not executing.
+
+Now let's hit resume, again it will start executing and now let's press the button. If our configuration
+
+is correct, then the code execution will come to this ISR and I am going to press the user button
+
+now.
+
+All right.
+
+So, here it is.
+
+I pressed the user button and the execution indeed came to the
+
+ISR.
+
+Right?
+
+So, that means the interrupt is indeed triggered. And after that, we are going to toggle the output.
+
+Right??
+
+That is this output pin that is LED.
+
+Now let's hit this step over and let's hit this step over to see whether our LED toggles or not
+
+and here you can see that our LED is not actually working.
+
+All right. Now let's hit run once again and let's hit the button once again.
+
+And the interrupt is triggering but the LED is not turning on. So, that means the LED configuration
+
+may be wrong.
+
+So, we have to debug this. How to debug this?? So, first,
+
+let's check the GPIO registers.
+
+The first checkpoint what I check is, check whether the peripheral clock is really enabled or not.
+
+In this case, it is indeed enabled.
+
+Why???
+
+Because the interrupt is triggering, right??
+
+So, that means GPIOD port is really activated.
+
+So, we need not to cross-check that, because both pin 12 and pin 5
+
+they belong to GPIOD.
+
+So, this part is working well.
+
+Right??
+
+So, we are getting the interrupt, but the problem is actually in the LED, that is confirmed now.
+
+Right??
+
+So, that means we have to cross verify all these settings now and now we are to check the registers of
+
+the GPIOD peripheral.
+
+Strictly speaking, we have to verify the bit positions related to pin number 12. Now, let's suspend the
+
+execution.
+
+The execution is already suspended.
+
+Alright??
+
+And now let's go to the register section
+
+here, I/O registers. And here, you can see various peripherals of the microcontroller.
+
+We are interested in GPIO.
+
+So, let's open GPIO and let's open GPIOD. So, in order to fetch the value of GPIOD registers, what
+
+you have to do is, you have to double click on register to fetch the value.
+
+So initially, this will be in black color.
+
+So, now here you can see that it is highlighted in green color, right??
+
+So, initially, it will be in black color. So, what you have to do is, you have to double click over that peripheral.
+
+Let me double click over here. You can see that the value is not fetched,
+
+right??
+
+So, now let's double click once again.
+
+And here you can see that the IDE fetched the values of the registers.
+
+Great!!
+
+And while fetching the value, make sure that your state is suspended. So, when the code is running, you
+
+cannot actually fetch the register values.
+
+And sometimes eclipse may go to not responding mode.
+
+Alright??
+
+So, now it is not responding.
+
+Wait a minute,
+
+we can solve this issue. It will come out of that not responding mode.
+
+All right.
+
+So, that's why always suspend the execution, then fetch the value of the register.
+
+All right.
+
+So, now let's check the mode whether the mode is properly configured or not.
+
+So, our bit position is actually 12,
+
+right??
+
+So, here it is. The bit position 24-25 and it is set to 1, 1 means output,
+
+that's correct. And look at output type.
+
+All right.
+
+So, wait a minute.
+
+So, this register is corrupted.
+
+Here you can see that we are actually configuring the output type for only one pin,
+
+right??
+
+That is pin number 12.
+
+This one, right??
+
+And its value is actually corrupted.
+
+So, this is set to 1, 1 means open drain.
+
+So, some other code is corrupting this register actually. So, here it is,
+
+here you can see that multiple bits are actually set to 1.
+
+Right??
+
+So, this is actually wrong and some code is corrupting this register
+
+and to debug this again,
+
+so, what you can do is, actually, we call GPIO Init twice,
+
+right??
+
+So, let's see what is the value of output type register after this call and let's again verify after
+
+this line, and then we'll see who is corrupting that.
+
+So, for that, let's keep the breakpoint here and let's go back to the debug mode and after that let's
+
+reset, so click here to reset, reset the board.
+
+Now the board has undergone the reset and now let's hit run. So, the first GPIO_Init is over, the code
+
+is now hanging here, isn't it??
+
+Now, let's verify the I/O registers and let's fetch the value. Here you can see that the code is not
+
+running, it is in the suspended state.
+
+Alright??
+
+So, now let's fetch the value of output type register.
+
+So, double click over this and once again double click.
+
+And here you can see that the bit number 12 is 0.
+
+That is zero means push-pull,
+
+that's correct.
+
+And after that, let's remove this breakpoint. To remove this breakpoint, what you can do is, you can
+
+go here and you can double click over that. So, just double click
+
+and here you can see that it is removed.
+
+And after that let's keep here, after this line.
+
+Now let's hit run.
+
+The second GPIO_Init is over,
+
+and here you can see that all values are corrupted.
+
+So, that means this call is actually causing that problem. Reason for that is, actually here
+
+you have not initialized the output type field, right??
+
+So, that's why it actually took the random value. Because this variable is nothing but the local variable.
+
+So, the local variable will contain garbage values, right??
+
+So, that is the reason, the output type since it is uninitialized here,
+
+it took the random values and in the code also, we don't have any checks for detecting the random
+
+values, right??
+
+For example, in the code where we configure the output type, here you can see that,
+
+so, you should configure this
+
+only if the mode is output mode, right??
+
+But we are not doing that check actually.
+
+You can include that check if you want,
+
+so, that would be good.
+
+So, otherwise what we can do here is in order to get rid of this problem, make sure that in the application
+
+you clear each and every member element of this structure variable to 0, before initializing the structure.
+
+So, let's end the debug. So, you can click over here, Terminate or you can click over here. So, that will terminate
+
+the debug session. So, once the debug session is terminated, you can relaunch by right-clicking over here
+
+and clicking Relaunch, so you can always do that.
+
+Now, let's go to the C and C++ perspective and here before initializing these two structure variable,
+
+let's initialize each and every member element of these structures to 0.
+
+So, that is always good.
+
+So, let's use 'memset'.
+
+This is actually a standard library function
+
+or API in order to initialize each and every member element of the structure to 0.
+
+So, what you have to do is, you have to send the address of the local variable or any variable,
+
+and after that memset, set set the memory to
+
+in this case we want 0,
+
+right??
+
+So, you can use 0 here and then you have to mention the size of that variable, 'sizeof' and you can
+
+use this variable sizeof.
+
+All right.
+
+So, this will actually set each and every member element of this structure to 0. Alright...
+
+Now let's do the same thing for GPIO button.
+
+All right.
+
+So, this is actually an important tip in order to avoid bugs in the program.
+
+Alright!
+
+So, now memset is actually a standard library API, so you have to include the standard library
+
+which is include
+
+Now, let's build the project, download and let's check and here you can see that due to the debouncing
+
+of the button, the LED is not behaving properly.
+
+Right?? Now, how to solve this issue?? So, we have debouncing problem, right??
+
+So, the interrupt can be triggered multiple times in this application because of the button debouncing,
+
+right???
+
+So, when the interrupt is triggered, wait for some time.
+
+So, what I would do is, let's introduce delay for some time, let's say 200ms. So, the delay function
+
+what we implemented, this one, it will actually cause approximately 200ms of delay.
+
+So, when the system clock is 16MHz and that is true in our case, because we are using internal
+
+RC oscillator, right??
+
+All right.
+
+So, this value cause 200 milliseconds of delay.
+
+So, wait for 200ms until the debouncing gets over. Then clear the pending event from the
+
+EXTI line which is set in the PR register, right??
+
+And after that, you handle the handle toggling of output pin. Alright...Now, let's test this application.
+
+Let's see how this works.
+
+All right.
+
+And now let's press the button.
+
+Here you can see that our application is working properly.

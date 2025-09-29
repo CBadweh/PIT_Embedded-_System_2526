@@ -1,0 +1,143 @@
+Hey, welcome back to the lecture.
+
+So, here we actually configured the ACK control bit, right?? And now what we can do is, we can program the
+
+CR1 register.
+
+All right!! Let's configure the FREQ field of CR2. So, for that, let me take 'tempreg' = 0 and
+
+tempreg is equal to let's use our function RCC_GetPCLK1Value(). In our case, it actually
+
+returns 16MHz, right?? And let's divide this by let's say 1MHz, because we only want
+
+the number 16, so not the entire value.
+
+All right??
+
+And after that, store the value of 'tempreg' into the CR2 register, that's it!! If you just take a look into
+
+the CR2 register, the initial 5 bits are for FREQ field, right?? So, you can also do something like
+
+this.
+
+So, in the tempreg, remember that only 5 bits must be valid, rest all must be masked out.
+
+I can even do this for safety purposes, I can do 0x3F111111. So, that is actually 3F.
+
+So, mask all the bits, except the first 5 bits.
+
+All right!!
+
+So, let me do this.
+
+And after that, I can just show the value of this one.
+
+All right.
+
+That's it.
+
+All right.
+
+Now let's go back to the CR2 register.
+
+So, we actually configure this one, right??
+
+Let's go back to the register set.
+
+So, CR1 is done, CR2 one.
+
+OAR,
+
+So, here, we are going to store the slave address. So here we are going to store the slave address.
+
+So, if our device behaving as slave,
+
+so, OAR stands for
+
+Own Address Register 1.
+
+So, we are using 7 bit slave address, isn't it??
+
+And that address must be stored here.
+
+So, now let's explore this register, bit0 is ADD0. So, this
+
+is actually the interface address and this is actually the 0th bit of the slave address,
+
+if the slave address mode is 10 bit. So, remember that in I2C ee you can also use a slave address of
+
+10 bit and that actually we don't discuss in this course.
+
+But generally, the slave address will be 7 bit, that is most commonly used and we'll be using 7
+
+bit address format for the slave.
+
+So, for 7 bit addressing mode, so, this field is don't care.
+
+So, you can't ignore this field.
+
+So, now here 1 2 7.
+
+So, that means you have to store the 7 bit slave address here in this bit position from 1 to 7.
+
+Let;s program the device own address.
+
+Let me take tempreg= handle config and we have to select the device address and remember
+
+that this device just must be shifted by one.
+
+So, because, we should not occupy the ADD0 bit, because that is don't care.
+
+All right?? Great!!
+
+And after that, I can simply copy this into the OAR register.
+
+All right!!
+
+Now, let's program the OAR1= tempreg .
+
+You can use the 15th bit position to select the addressing mode, whether you want to use 7 bit slave address
+
+or 10 bit.
+
+So, if this bit, if it is 0 which is true by default, then only 7 bit slave address will be acknowledged.
+
+So, that means a 10 bit address will not be acknowledged, that is actually okay for us, because we are
+
+not using 10 bit addressing mode.
+
+So, this bit will always be 0.
+
+And so that's why I need not to configure this bit. But if you are using 10 which I don't think mode
+
+for the slave then you have to set this bit to 1.
+
+All right.
+
+Yeah you can also see that the bit 14 should always be kept at 1 by the software.
+
+So that is actually I don't know why but the difference manual says that that's why the result a bit
+
+14 has to be maintained that one.
+
+So let's do that.
+
+So now here what we can do is temp rig or is equal to 1 shipped in by 14.
+
+All right so no less to maintain the uniformity.
+
+Now let me use everywhere the twice are it doesn't matter actually if you use the assignment operator
+
+advice or the but let's maintain the uniformity across the code.
+
+So let me use that bit twice.
+
+Or is equal to all right.
+
+That looks good.
+
+So here there are no more ways to configure.
+
+Let's move on to oil after all which is actually not required and we are not going to configure none
+
+of these registers and now let's directly move on to CCR the clock control that is to.

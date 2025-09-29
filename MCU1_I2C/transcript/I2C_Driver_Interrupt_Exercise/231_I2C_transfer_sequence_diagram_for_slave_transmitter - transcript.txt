@@ -1,0 +1,163 @@
+Hey welcome back to the lecture.
+
+So, now in this lecture let's understand the transfer sequence diagram for the slave transmitter.
+
+So, now how
+
+Slave actually transmits the data to the master. So, first the read transaction has to be initiated by
+
+the master.
+
+Isn't it ? So, Master first generates the start condition and then Master is going to generate the address
+
+phase and for that address phase the slave actually ACKs here and when the slave ACKs, so you can see that
+
+at the slave side what happens is the event EV1 happens. Now that event EV1 is nothing but
+
+the ADDR flag is set to1. So, this indicates that the address is matched.
+
+So, this is the address match event. For Master,
+
+Actually it is address sent event. But for slave it is address matched event, matched with the own address.
+
+So, here actually the ADDR sets to 1, and clock will be stretched.
+
+So, here you can see that the EV1 event actually stretch SCL low until the end of the corresponding
+
+software sequence. So, software has to clear this flag.
+
+Now once this flag is cleared you can see that another event happens and that is EV3-1 that
+
+is this one. So, that is nothing but the setting of flag TXE. So, TXE sets to 1 and that means shift register
+
+is empty and data register is empty and to avoid under run
+
+What happens is the clock will be stretched. So, that's why EV3_1 also has the capacity
+
+to stretch the clock. So, you have to remember this. All right.
+
+So, so that means whenever TXE is set, So whenever TXE is equal to 1 then that means that that is actually
+
+a request for data isn't it ?
+
+So, software can load the data into the data register and data will be transmitted to the master. So, that's
+
+why EV3 is also actually the TXE is equal to 1.
+
+So, whenever TXE happens here slave actually loads the data.
+
+So, now here we can see that once the data is sent from slave to the Master, Master actually ACKs
+
+Right ?
+
+So, that means that master actually wants one more data. So, that's why slave sends more data here and
+
+master ACKs here.
+
+And remember that the EV3 happens after receiving the ACK. So, that is actually setting of TXE
+
+equal to 1.
+
+So, that means TXE happens only if Master ACKs successfully. So, otherwise TXE is equal to 1 will not
+
+happen. So, for the last data byte here, we can see that.
+
+So, the slave has sent the last data byte to the Master and Master actually NACKs Here.
+
+This is a NACK.
+
+So, once NACK happens, so you can see that this event happens. So TXE will not be set.
+
+So, this event happens.
+
+That is EV3-2 which is nothing but AF=1 that is acknowledgement failure and
+
+after that master generates the stop condition.
+
+So, whenever a slave is transmitting, if ACK failure happens then a slave must understand that master
+
+doesn't want more data. So, slave should stop sending more bytes to the master.
+
+So, you have to remember this.
+
+So, whenever slave is transmitting the ACK failure is actually end of data transfer.
+
+All right. Great !
+
+Now let's move forward and let's understand transfer sequence diagram for slave receiver.
+
+Now slave receiver means master has to generate write transaction.
+
+Right.
+
+So, Master first generates the start condition, address phase and here the ADDR is equal to 1. So, once
+
+the ADDR is equal to 1 clock
+
+will be stretched that you know. And the moment slave clears the ADDR flag data will be received
+
+from the master.
+
+And for that slave actually ACKs here and after slave sends its ACK then only EV2 will be set.
+
+So, EV2 is nothing but RXNE going high.
+
+So, here your
+
+Driver should actually send event to the application saying one byte is ready.
+
+Then software actually use the data. Great ! and here you can see that so when Master receives the last
+
+byte slave ACKs and here you can see that the RXNE is set.
+
+That's correct.
+
+But you should also notice that master actually generates the stop here.
+
+Because the master doesn't want more data.
+
+So, once the master generates the stop condition you can see that the EV4 happens. So, EV4
+
+is nothing but the detection of Stop. Stop
+
+Flag will be set to 1. and this is an indication for the slave that the master has ended the write transaction
+
+So, when slave is receiving the data, if slave detects stop flag then it is end of data reception for
+
+the slave.
+
+Alright. So, you should also note this one stop flag will be set to one only for slave, So, stop flag is
+
+not applicable for Master. Stop flag is applicable only for slave that to when slave is in reciever mode.
+
+when slave is receiving data. So, we can see here when slave is transmitting data the stop flag it doesn't
+
+appear actually. So, you can see that in this diagram there is no mention of stop flag. So that's why
+
+when slave is transmitting, remember this point that AF=1 is actually an indication of end
+
+of slave transmitting the data and when slave is receiving the data.
+
+Setting of stop flag is actually an indication of end of slave receiving the data.
+
+Alright. So, with all these details now let's modify our driver code to receive all these notifications
+
+to the application. So, if ACK failure is received then that is actually end of TX. if stop generation
+
+is detected then it is end of RX. If request for data event is received which is actually TXE that
+
+means send one byte and receive data that is RXNE, if this event is received then application has
+
+to received one byte.
+
+All right.
+
+So, now the I2C driver has to send all these events to the slave application and now in the next lecture.
+
+Lets modify the
+
+I2C
+
+Driver
+
+Source file in order to include these things and I'll see you in the next lecture.

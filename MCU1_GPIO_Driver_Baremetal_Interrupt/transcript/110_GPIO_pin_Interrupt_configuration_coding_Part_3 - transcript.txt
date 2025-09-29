@@ -1,0 +1,25 @@
+Hey welcome back to the lecture.
+
+So now I am in the MCU specific header file.
+
+And here I have created SYSCFG_RegDef structure and this is how you should create it.
+
+And if you open the reference manual, let's go to the SYS Config
+
+Peripheral so it is right here..
+
+And if you go to the registers and go directly to the register map and here it is.
+
+So it has 4 EXTI control register.
+
+So basically you can make use of an array here.
+
+So that's why I have used EXTICR[4] an array so EXTI0 means this register,1 means this
+
+register 2 means this register and so on.. and among these registers we are only interested in EXTI control
+
+registers because we are working with EXTI lines right ?
+
+So that's why we are only interested in EXTI control registers and lets see what those registers
+
+to.

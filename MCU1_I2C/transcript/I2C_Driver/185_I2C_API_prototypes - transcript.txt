@@ -1,0 +1,95 @@
+Hey welcome back to the lecture.
+
+So, in the previous lecture we created some of the initialization macros.
+
+Let's create the API prototypes. For that the best thing what we can do is we can go to the SPI driver
+
+.h and we can copy some of the APIs.
+
+So, what I'm going to do is I'm going to copy all these API section. So, we can just copy this from the
+
+SPI.
+
+Let's go to the I2C driver.h and let me paste here.
+
+So, peripheral clock setup.
+
+So, this API we actually need isn't it ?
+
+So, change the name to I2C here and here as well.
+
+All right.
+
+SPI_Init, SPI_DeInit
+
+Right ?
+
+So, let's change it to I2C_init and I2C_DeInit.
+
+So, what I would do is I will just change all SPI keyword into I2C
+
+All right.
+
+So, I2C init, I2C deinit
+
+All right.
+
+And after that send and receive we can remove all these APIs
+
+We can define our own API for the I2C peripheral.
+
+And here I2C interrupt config.
+
+Priority config is required.
+
+These IRQ handling you can remove because it is slightly different from SPI.
+
+So, we'll discuss that later.
+
+And after that all these peripheral control you can keep that and all these others you can remove, and
+
+you can keep the I2C get flag status because I2C also has a couple of flags so you can
+
+keep I2C get flag status that you can keep.
+
+And here you can keep this application callback which will be using when we implement the Interrupt
+
+based APIs.
+
+All right.
+
+So, these are some of the APIs.
+
+We are going to implement first and now the task for you is you have to create a couple of APIs.
+
+First one you have to implement its peripheral control which is very easy.
+
+So, the concept is exactly same like what you did for SPI.
+
+So, you have to enable or disable the peripheral clock.
+
+So, I hope you can do this.
+
+And after that you can implement I2C_DeInit.
+
+So, I2C init will do it later together. But I2C deinit you can do and the interrupt config and
+
+the priority config will be same as SPI or GPIO.
+
+So, no code change is required.
+
+So, you can just use the old code and peripheral control this is to enable or disable the peripheral. As
+
+SPI in I2C also you have peripheral control bit.
+
+For example, let's go to the control register maybe one that you will find PE that is peripheral enable.
+
+Let's explore what exactly is PE and PE stands for peripheral enable and you can use this bit to disable
+
+or enable the peripheral.
+
+And I hope you can implement that and this API will implement later and that's it.
+
+So, some of the APIs
+
+You can easily implement and try to attempt that and I'll see you in the next lecture.

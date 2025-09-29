@@ -1,0 +1,107 @@
+Hey, welcome back to the lecture.
+
+So, here is a implementation of close receiver data and close send data.
+
+So, whenever you are sending data or receiving data in interrupt mode and if you want to close the reception
+
+or transmission make sure that you disable all the interrupts.
+
+Closing means, you don't want more interrupts. Isn't it? So, that's why first you have to cleared or disable all
+
+the interrupt enable control bits.
+
+For example, in the case up close receive data.
+
+So, I actually disable the IT buf enable. So, that actually prevents generating more RXNE
+
+or TXE interrupts.
+
+And I also disable IT event enable control bit. So, because I don't want to receive more interrupt
+
+for different events of the I2C. And after that the TxRxState should be reseted to I2C
+
+ready. And the buffer should be initialized to null and RX length should return to 0, RxSize should
+
+return to 0,
+
+and also you have to enable the ACKing. Because, during a reception you might have disabled the ACKing.
+
+Right?
+
+So, this is actually only if the ACK control is set to true.
+
+So, then only you can enable ACKing. All right. So, that's how you close the reception of data,
+
+and close send data. Again it's very simple you disable the ITEVENT enable control bit. And after
+
+that TxRxState is ready, TxBuffer is null, and after that you have to make TxLen
+
+is equal to 0.
+
+All right.
+
+That's it. Now let's give prototypes of these APIs in the driver.h.
+
+All right.
+
+In the driver.h,
+
+so I would go to Data Send and Receive.
+
+So, here I would mention the prototype of CloseReceiveData and CloseSendData.
+
+All right. So, in the I2C driver source file we also actually implemented these helper functions
+
+right? in order to handle the RXNE interrupt and TXE interrupt.
+
+Now let's give a prototype to these functions.
+
+So, these functions are actually private functions.
+
+Now you can mention it as static
+
+no problem.
+
+So, let's mention them as static functions and let's give the prototype. So, let's give the prototype at
+
+the top,
+
+so let's go to the top and let's mention here.
+
+All right.
+
+That's it.
+
+So, we completed most part of the driver development and again we have to handle the error conditions.
+
+Right?
+
+So, we have to capture the error interrupts that will do later,
+
+but before that let's see whether our code compiles or not.
+
+So, at this point you should not have any errors and let's compile.
+
+All right.
+
+So, we do have one error
+
+so let's see what exactly is that, too few arguments to function.
+
+So, here we are actually calling the CloseReceiveData,
+
+so you have to mention the pointer to the handle.
+
+All right.
+
+All right. So, that's a change. Now let's again compile and CloseSendData, so here as well. Grate!
+
+So, now let's again compile the code and yes, we don't have any errors
+
+and in the next lecture what we can implement is, let's go to the driver.h,
+
+so we just implemented I2C_EV_IRQHandling.
+
+So, in the next lecture let's implement I2C Error
+
+IRQHandling. I will see you in the next lecture.

@@ -1,0 +1,91 @@
+Hey.. welcome back to the lecture.
+
+So, now let's understand how master is going to write data to the slave ?
+
+First what happens is master generates the start condition and after that comes the address face.
+
+So, this is the 7 bit address of the slave.
+
+And after that this is actually the R/W bit right ??
+
+And this is zero.
+
+That means master is going to write. And after that, here Master actually receives the ACK from the slave.
+
+All right.
+
+So, this is actually the ACK and after that master is going to write the data.
+
+That is one byte of data.
+
+So, Master produces this data and for that a slave is going to ACK.
+
+So this is the ACK.
+
+All right.
+
+And after that master is going to write the second byte.
+
+So, this is a second byte produced by the master.
+
+And for that this is the ACK, which is received by the slave and after that master is going to write
+
+the third byte.
+
+And this is the ACK.
+
+and after that master terminates, that communication with the slave by generating the stop condition.
+
+So, this is a stock condition.
+
+So, that's how master sents couple of bytes to the slave.
+
+All right.
+
+So, that's very simple to understand right ?
+
+Now let's understand how master reads data from the slave, Again first master initiates the transfer
+
+by generating the start condition, address phase.
+
+Here you can see that the R/W bit is actually 1.
+
+Right ?
+
+So, that means master wants to read. and this is the ACK from the slave, and after that this is the data
+
+one byte of data which is produced or sent by the slave. So, master reads this data. that slave puts the data
+
+on the SDA line.
+
+So, this is produced by the slave and after that for that master ACKs here.
+
+So, this is the ACK which is produced by master.remember..
+
+So, once a slave receives this ACK that's an indication for the slave to send one more byte.
+
+So, that's why slave sents one more byte.
+
+This is another byte, second byte which is sent by the slave. For that master again ACKs here.
+
+This is ACKing by the master.
+
+That is an indication for the slave to send one more byte. So, that's why slave sents the third byte here
+
+to the master and for this byte master doesn't ACK.
+
+It NACKs.This is a NACK. So that is an indication for the slave to stop transmitting data.
+
+So, this is NACK which is given by the master which is like telling to the slave that I'm done with
+
+the data reception and I don't need more bytes.
+
+That's an indication for the slave that master doesn't want to recieve more bytes.
+
+And so that's why slave doesn't send any more data and master actually raises the stop condition and
+
+that's how the communication ends.
+
+All right.
+
+Now let's understand about the repeated start in the next lecture.

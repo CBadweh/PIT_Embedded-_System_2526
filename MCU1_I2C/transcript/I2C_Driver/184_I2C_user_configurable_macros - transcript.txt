@@ -1,0 +1,165 @@
+Hey welcome back to the lecture.
+
+So, in the i2c_driver.h file I have added the configuration structure and the handle structure.
+
+Now let's go back to the project and after that let's add some headers in the SPI_driver.h
+
+You have this header right ?
+
+So, we have to keep this header in every driver.h file. So, lets keep that header here as well.
+
+And after that in the device specific header at the end remember that you have to add the
+
+i2c_driver.h
+
+So, let's add that. All right.
+
+That's great.
+
+And now let's go to the driver.h file.
+
+And after that let's go to the i2c_driver.c
+
+And this is empty as expected.
+
+And now let's go to the driver.h
+
+All right.
+
+So, now let's create some of the options to initialize these member elements, First let's see what are
+
+options we can use to initialize this member element that is speed.
+
+So let me give you reference of Speed.
+
+Speed can be normal or fast mode speed.
+
+Right ?
+
+So, that's why I can give #defined I2C_SCL_SPEED normal mode. right ? Or standard mode.
+
+So, I can call it as SM, standard mode. So, in standard mode
+
+The speed is 100 KHz. right ?
+
+So, I can write 100 KHz like this.
+
+And after that another speed what we can achieve is fast mode.
+
+Right ?
+
+FM. So, where we can go up to 400.
+
+Right ?
+
+So, for this driver development lets test our I2C exercises with 100 KHz and
+
+400 Khz.
+
+And if you want any value in between then you may create more macros here. for example
+
+Let me also create #define I2C_SCL_SPEED lets say FM.
+
+So, what I can do here is fast mode I would do like this fast mode 4K and faste mode 2K.
+
+So, this is to run the serial clock at 200 KHz.
+
+So anything more than 100 KHz is actually considered as fast mode.
+
+All right.
+
+So let's use these three macros.
+
+All Right.. For the serial clock speed. and now after that device address, slave device address is actually
+
+7 bit wide right ?
+
+So, that's what I have used uint8_t here. The device address is mentioned by the user.
+
+We don't have any options for this.
+
+So, this value will be mentioned by the user.
+
+So, we don't have any initialization options for this.
+
+All right.
+
+Now let's ack control.
+
+So, know ack control.
+
+Let's create some options for ACK control.
+
+So, define I2C_ACK_ENABLE and I2C_ACK_DISABLE.
+
+All right.
+
+So, now later we can initialize this and after that.
+
+Now let's go ahead and create one more section here for duty cycle.
+
+All right.
+
+For Duty cycle, this is actually the duty cycle of the serial clock in the fast mode.
+
+So, define I2C_FM_DUTY_CYCLE. Let me write
+
+Duty.
+
+There are two types of duty cycles.
+
+Let's explore from the reference manual.
+
+Let's go to the reference manual and let's go to the CCR register and in the CCR register you can see
+
+there is a field called duty and duty cycle maybe 2 or 16 by 9. Duty 2.
+
+And let's create one more macro duty 16_9.
+
+All right. let's initialize these macros. So ack control can be achieved by configuring the CR1
+
+Register. if you go to the CR1 register and if you go to the 10th bit there you can control the acking.
+
+Let's go to the 10th bit.
+
+ACK, that is acknowledged enable.
+
+You can see that the automatic acknowledgement is actually disabled by default.
+
+So no.
+
+Acknowledge is returned for the byte received.
+
+So, that is quite surprising but that is true actually.
+
+So acknowledgement is disabled by default.
+
+If you want to enable it what you have to do is you have to make it 1, ACK enable.
+
+I would call it as 1 and ACK disable.
+
+I would call it as 0.
+
+All right.
+
+So, for the duty cycle we how to go to the CCR and here if you want duty cycle of this one then it has
+
+to be zero.
+
+So, let's make it a zero and if you want this duty cycle then it has to be one.
+
+And don't worry about the duty cycle.
+
+I will explain that later.
+
+That's it.
+
+These are the options to initialize of these configurable items.
+
+And for this configurable item the user is going to mention.
+
+So,we need not to give any options for this.
+
+All right.
+
+So, that ends our this lecture and Go head create these macros and I'll see in the next lecture.

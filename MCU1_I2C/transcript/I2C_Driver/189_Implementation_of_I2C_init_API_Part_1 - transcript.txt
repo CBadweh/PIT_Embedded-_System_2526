@@ -1,0 +1,339 @@
+Hey Welcome back to the lecture.
+
+So, now lets code I2C init.
+
+All right. So, now first let's go to the I2C registers and let's see what are the things we need to configure.
+
+First let's go to the CR1 register.
+
+So, now here actually we have to control the ACKing right ? Now,
+
+First let's configure CR1 register where we only have to worry about configuring the ACK.
+
+All right. Now let's do that.
+
+So, let's go to the project.
+
+Let's create a temporary variable. let's call it as tempreg is equal to zero and tempreg is equal
+
+to.
+
+So, we have to store the value of the ACK control variable.
+
+So, handle and you have to go to the config and here just select the ACK control.
+
+All right.
+
+So, this has to be moved to the tenth position.
+
+Right.
+
+So, let's move that to the tenth position.
+
+All right.
+
+This is actually bit wise or is equal to.. all right.
+
+And now after that no other configurable bit positions are there in the CR1 from the application side.
+
+Let's go to the CR2.
+
+And in CR2 we have to configure the freq field and these fields we need not to touch.
+
+So, as you know for the freq field the freq bits must be configured with the APB clock frequency value.
+
+So, that means you have to calculate what exactly is the APB1 bus clock frequency.
+
+So, we know that in our program that is 16.
+
+But it need not be 16 always, user may change it right ?
+
+So, that's why we have to calculate it. So, for that let's create a small function to calculate the value
+
+of the APB1 bus clock.
+
+Now let me create a function called let's say RCC_GetPCLK1Value
+
+So, let me create a variable here.
+
+uint32_t pclk1.
+
+And let's return this pclk1.
+
+All right.
+
+So, now how to calculate the value of the Pclk1.
+
+For that we have to refer to the clock tree.
+
+So, the pclk1 depends upon the clock source.
+
+Right ?
+
+So, what are the clock sources we have. We have HSE, HSI, PLL, PLL R etc depending on that
+
+the system clock is decided right ?
+
+So, in our case clock source is HSI. So, system clock will HSI that is 16 MHz.
+
+And after that, that system clock is modified using the AHB prescalar.
+
+Right.
+
+And so, that's why we have to divide the system clock by the AHB prescalar and after that we got
+
+AHB clock.
+
+Right.
+
+And that AHB clock is again divided by the APB1 pre scalar clock and then the clock is delivered
+
+to the APB1 peripheral. So, where our I2C is connected.
+
+So, we have to first find out what exactly is the source from reading the registers of the RCC and after
+
+that we have to calculate the AHB prescalar and APB1 prescalar. Now lets do that.
+
+All right.
+
+So, now for that we have to go to the RCC registers and in the RCC registers let's find out where we
+
+should go.
+
+Actually it is clock configuration register.
+
+So, in the clock configuration register that is CFGR.
+
+So, you have to refer to the bit number two and three.
+
+So, let's go and check.
+
+So, bit number two and three.
+
+So, here it is system clock switch status.
+
+Right.
+
+So, HSI oscillator used as system clock HSE is used PLL is used.
+
+So, we have to find out what exactly is the value of bits two and three.
+
+Let's do that.
+
+So, Now let me create a variable here.
+
+Let's say uint8_t clksrc.
+
+So, clksrc is equal to RCC ->CFGR and we have to read the bits 3 and 2
+
+Right ?
+
+So, that's why what we can do is you can right shift this by 2. So, why we do this because we are bringing
+
+the bit number second and third to the bit position zero and one.
+
+And after that you can just mask the first two bits with the bit wise & operator.
+
+So, again just mask with 0x3.
+
+So, this will mask out all other bits except the bit number zero and bit number one where our value is stored.
+
+All right.
+
+So, this clock source is equal to zero.
+
+Then the system clock is actually is HSI, right ?
+
+So, I can write SystemClk is equal to HSI, HSI is 16 MHz.
+
+Right.
+
+Else if clock source is equal to 1.
+
+So, the clock source one means it is HSE.
+
+All right.
+
+So, that is 8 MHz in our case in the discovery board.
+
+Otherwise else if, if clock source is equal to 2 then system clock will be decided by the PLL.
+
+And for that you have to actually calculate.
+
+You can create one more function here called RCC_
+
+GetOutputClock ()
+
+So, this function i ll not implement because we don't use PLL in this course.
+
+So, but let's create this function, though will not be using this.
+
+But let me just create this function.
+
+All right.
+
+That's it.
+
+So, now let me create this variable right here.
+
+All right.
+
+So, that makes sense.
+
+And after that what you have to do is we have to find out what exactly is the value of AHB prescalar.
+
+All right.
+
+So, the AHB prescalar value is decided by the bit fields 4-7 and the field name is HPRE which
+
+is AHB prescalar in the CFGR register. Here,
+
+You can see that if this value is less than 8 then system clock is not divided.
+
+But if this value is greater than eight are equal to eight.
+
+So, the system clock will be divided according to this information here.
+
+This will be the division factor if this is 8 and the system clock will be divided by 4.
+
+If the HPRE value is 9 like that.
+
+So, that's why we have to find out what exactly the value of this field.
+
+Let's find out.
+
+So, in the program.
+
+So, let me create a small variable called let's say temp and temp is equal to. First lets read the value
+
+of HPRE.
+
+For that let's again take the help of our RCC-> CFGR and right shifted by 4. We actually got the
+
+value into the extreme right position of the register.
+
+Right.
+
+So, after that let's mask all other bits except the first four bits.
+
+For that we can mask with 0xF.
+
+All right.
+
+And after that if temp is less than 8, then the AHB prescalar is equal to 1.
+
+Right.
+
+Else it depends on the value of temp.
+
+So, what we can do is let me create this first.
+
+So, let me create AHB prescalar. So, now let me create a small array which holds the division factors.
+
+So, let me create the array with these factors.
+
+Let me call it as AHB prescalar which is a variable of type array. So, which holds all the division
+
+factors.
+
+So, now let me copy this and let me put it in the beginning to maybe here.
+
+All right.
+
+And after that what you can do here is if temp is is equal to eight or greater than eight then this
+
+prescalar will be this variable. So, lets take the value from the array what we created.
+
+So, we can just pass this temp right ? If this temp is 8 then you have to fetch the first field of
+
+the array.
+
+So, that's why I have to make minus 8 here. Correct ?
+
+Right.
+
+So, if temp is eight then eight minus eight which is zero.
+
+And I will get the division factor 2, if it is nine Nine minus eight is one.
+
+So I'll get this division factor like that.
+
+All right.
+
+That's great.
+
+Let's go back to the diagram here.
+
+And yes we actually found out the value of AHB prescalar.
+
+And now our duty is to find out APB1 prescalar. For that again you have to go to the RCC
+
+CFGR register and you had to refer to the 10th bit field. 10, 11 and 12.
+
+Let's check that, 10,11 and 12.
+
+Here it is.
+
+So, this is APB1 prescalar.
+
+And again here.
+
+If the value of this field is less than 4 then AHB clock is not divided.
+
+Otherwise it is divided according to these division factors. lets go back and let me copy all these things.
+
+And let me paste here.
+
+So, basically this is for AHB. And this is for APB1 and here we have to now change this 4 to 10 because
+
+it starts from 10th position. 10, 11 and 12.
+
+Right.
+
+So, only 3 bits are sufficient.
+
+So, we have to change this F to 7.
+
+And here if temp is less than 4, then APB let me call APB1.
+
+Prescalar is equal to 1. Let me create this variable. okay.
+
+All right.
+
+And otherwise we have to create one more array now and array will be APB1 prescalar with all these
+
+division factors 2, 4, 8, 6.
+
+Great.
+
+Let's go back.
+
+So, you have to change this AHB with APB. All right. and value APB1.
+
+Right.
+
+And here temp-4. All right.
+
+So, after that pclk1 can be calculated like this, is equal to system clock divided by AHB pre
+
+scalar
+
+And this is finally divided by APB1 prescalar.
+
+All right.
+
+That's it and then you can return the value.
+
+All right.
+
+So, this is actually a generic function to calculate the value of the pclk1 and a similar function
+
+you can create for pclk2.
+
+But it is not required here, because I2C is not hanging on other buses right ?
+
+All right.
+
+So, take a look into this function and try to figure out the code and I'll see you in the next lecture.
+
+So, in the next lecture let's continue and less program the freq field of the control register 2.

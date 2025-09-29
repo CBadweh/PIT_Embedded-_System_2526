@@ -1,0 +1,103 @@
+Hey, welcome back to the lecture.
+
+So, now let's implement all these callback events.
+
+Now let's go to the code and let's go to the driver file and let's go to our event IRQ handling and let's
+
+go to the TXE event.
+
+So, this is where we detect the TXE event right ? Alright.
+
+And here we have one check isn't it ?
+
+Check for device mode. if the device is master.
+
+Then this will be executed else.
+
+Let's implement for slave.
+
+So, this is for slave. So, TXE is nothing but request for data isn't it ? So, here what we can do is let's call
+
+the application call back. I2C_ApplicationEventCallback (pI2CHandle).
+
+So, let's give the handle and let's send the event. I2C event let's call it as data request
+
+alright.
+
+So, later we can define this no problem and we'll do that only if the slave is in transmitter mode. Whether
+
+the device in transmitter mode or receiver mode you can check in the status register. For example, if
+
+I go to the status register let's say SR1, not SR1 Sorry SR2. So, here you can see that
+
+so SR2 you will find TRA bit. So lets check that TRA. So, TRA actually helps you
+
+to understand whether the device is in transmitter mode or receiver mode. So, now if the TRA bit is zero
+
+then the device is in receiver mode. if the TRA is set then the device is in transmitter mode. Alright.
+
+Alright. So, now let's do one thing here. So, first let's make sure that slave is a really in transmitter
+
+mode. For that we can check that TRA bit and if that is set we are 100 percent sure that the device is in
+
+transmitter mode and TXE also happened and we can call the application event call back. Great ! So, remember
+
+that TRA bit is actually influenced by the read write bit of the address phase Alright. So, that's about data
+
+request. For the data receive so, we have to change in RXNE right ?
+
+So, in the RXNE.
+
+So, now let's create else part here, alright.
+
+This is for slave and the same thing you have to do, make sure that the slave is really in reciever mode.
+
+by checking the TRA bit and then call the application event callback and the event is I2C
+
+event data receive. Alright.
+
+and after that ACK failure.
+
+So, this we have already done so that actually should be done in error IRQ
+
+Handling. So, here it is already there.
+
+Right.
+
+So, when the ACK failure happens we actually clear the ACK failure and then we send the event callback.
+
+So, that is already implemented and after that the last thing is stop generation and whenever stop happens
+
+it is actually an event right ?
+
+So, I2C event IRQ handling and here you can see that.
+
+So, where exactly we are handling stop.
+
+This is for SB, ADDR, BTF.
+
+And here it is stop. So, when stop happens we have to complete the clear sequence. So, that what we do here
+
+and after that we call the application event callback stop.
+
+So, now this code will not be executed by the master. Alright.
+
+So, that's all you need to do and now let's define these macros. I2C event data request and I2C
+
+event data receive. let's go to the I2C header and here, so all right.
+
+So, here are application events I2C data receive.
+
+Let's give the code 9 alright. So, that's all you have to do.
+
+And now let's compile the code let's see whether the project builds or not.
+
+So I'm building the project. So, the project actually builds successfully that actually completes the
+
+slave logic. For the slave
+
+The application has to process the data request and data receive event that's it and in the next lecture
+
+let's do some exercise by making our STM32 microcontroller as I2C slave and I will see you in
+
+the next lecture.

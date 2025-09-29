@@ -1,0 +1,463 @@
+Hey welcome back to the lecture.
+
+So, before doing the exercises on I2C we have to cover some important concepts related to the
+
+I2C communication.
+
+One thing is we have to understand how to calculate the right pull up resistor for our application and
+
+second thing.
+
+What you have to understand is the rise time calculation and also we have to understand what exactly is bus
+
+capacitance.
+
+So, these are very important discussion and it will help you to achieve successful communication between
+
+devices using I2C protocol.
+
+Now let's proceed.
+
+First let's learn how to calculate the right pull up resistance value.
+
+Remember that in order to calculate the pull up resistor.
+
+So, you have two equations.
+
+So, the first equation gives you the minimum value of the pull up resistance which is required for your
+
+application.
+
+The full up resistance minimum value is a function of the Vcc or Vdd, which is the main supply for your
+
+microcontroller minus VOL(max) and divided by the current.
+
+So, basically it is V by I.
+
+That's it. Where VOL means a low level output voltage. so ,ideally the VOL means zero isn't it ? the
+
+low level output voltage is the zero and the high level output voltage means Vcc. Right ?
+
+But in I2C specification up to 0.4 V it is considered as low level output voltage. So
+
+VOL value you have to get from the I2C specification.
+
+Let's go to the I2C specification.
+
+So, now in the to specification, So you can go to the page number 45 and that is actually the table number
+
+9.
+
+And here you will get the value of VOL that is low level output voltage.
+
+When VDD is greater than 2 V. And that is actually is equal to 0.4 and IOL value you
+
+can consider as 3 mA.
+
+And after that you can substitute all those values here in order to calculate the minimum value of the
+
+pull up resistors.
+
+For example, let's consider the scenario where the signal is going from high to low either SDA or SCL.
+
+So, let's say this is the VCC and this is 0. So somewhere here is the VOL so that is 0.4 V.
+
+So, when SDA or SCL goes low that means that this transistor conducts right ?
+
+So, this is Vcc.
+
+So, the current actually flows here.
+
+So, that is called as IOL.
+
+So, therefore this resistance value can easily calculate by Rpu
+
+That is minimum is equal to this VCC minus the voltage drop across this.
+
+That is the VOL.
+
+Which is not actually zero.
+
+So, the maximum value you have to take up to 0.4 you can considered as low.
+
+So, that is 0.4 divided by the IOL, that you can take as 3 mA.
+
+So, if you solve this equation you will get the minimum value of Rpu that is pull up resistance.
+
+All right.
+
+And to calculate the maximum value, you have to use this equation. Here you can see that the maximum pull
+
+up resistance is a function of the maximum rise time.
+
+So, this is a very important equation because this equation is a function of the T rise and the bus capacitance.
+
+So, this equation takes into account the T rise timing and bus capacitance.
+
+So, here tr means rise time of both SDA and SCL signals and Cb means the capacitive load for each
+
+bus line.
+
+So, now let's understand what exactly is rise time.
+
+All right.
+
+Now here in this case you can consider this wave form and this can be either SDA or SCL.
+
+So, you can apply this to any line. look at tr, so now tr is actually the gap between 30 percent of the
+
+voltage level to the 70 percentage of the voltage level.
+
+So, that means tr is defined as the amount of time taken by the rising edge to reach 70 percent amplitude
+
+from 30 percent amplitude for either SDA or SCL.
+
+So, ideally the tr must be zero isn't it ?
+
+So, here if you consider this scenario.
+
+So, what's happening here ?
+
+So, here are the signal is actually rising from low to high isn't it ?
+
+So, but it is actually taking significant amount of time and that time is denoted by tr.
+
+That is the rise time. This rise time should not be high, because if it is too high then it will cause
+
+problem during I2C communication.
+
+The value of the pull up resistance and the bus capacitance actually influence this Tr timing.
+
+So, that means the tr is proportional to the RC time constant.
+
+So, if you pull up resistance value increases or if your bus capacitance increases then tr increases.
+
+So tr increasing means what ? So someone is resisting the signal to rise to Vcc isn't it ?
+
+Right ?
+
+So, that means the signal is facing some hurdle to reach to its 70 percent amplitude.
+
+Right ?
+
+So, that is actually a problem. I2C specification is very serious about this problem.
+
+So, that's why it has given some maximum limit for tr.
+
+That is that rise time.
+
+So, this should be thousand nanosecond for standard mode.
+
+So, if you're using standard mode then t rise of a signal either SDA or SCL should not be more than one
+
+microsecond or thousand nanoseconds.
+
+Alright. So I2C spec cares about tr value and you have to respect it while calculating the pull
+
+up resistor value. Higher value or pull up resistors.
+
+So, that means weak pull ups increases tr value.
+
+Why ?
+
+Because tr is as I said directly proportional to the RC time constant.
+
+So, if R rises the tr also rises.
+
+So, this is not acceptable.
+
+If tr crosses maximum limit mentioned in the spec so what happens if you select a pull up resistance
+
+with very high value, so you will face some problem like this.
+
+So, here you can see that a signal is not able to reach the 70 percent of the Vdd.
+
+Right ?
+
+So, if it doesn't reach 70 percent of the Vdd that is 2.3 V in this case then the signal is
+
+not considered as high.
+
+So.
+
+And the slave will receive some garbage values or I2C communication will fail.
+
+Now in the oscilloscope if you see a signal something like this that means a signal which is failing
+
+to reach atleast 70 percent of the VCC or VDD. Then you should come to the conclusion that RC time constant
+
+is very high.
+
+So, that's the reason tr is very high and your signal is not able to reach the 70 percent amplitude of
+
+the VDD.
+
+Now to solve this what you are to do is you have to either bring down the pull up resistor value so
+
+you have to decrease R or you have to decrease the bus capacitance.
+
+So, here RC means I can also write like RpCb.Where Rp stands for the pull up resistance
+
+and Cb is the bus capacitance.
+
+Alright. So the high pull up resistance will cause problems like this to the signals.
+
+Let's go back.
+
+That means you have to lower the resistance value if you face problem something like that, so lower the
+
+value pull up resistors also called a strong pull ups decreases tr value which is good actually, but
+
+they also lead higher current consumption, because if this resistance is very very less than more current
+
+actually flows across this and that means the more current consumption.
+
+So, that is also bad actually for power.
+
+aware or low power applications.
+
+So, that's why you have to calculate the resistance value using these equations and select one value between
+
+the result what you get from solving these equations.
+
+All Right. So, lets move forward.
+
+So, now what exactly is the bus capacitance.
+
+So, remember that capacitance means that the voltage level on the signal line can't change instantaneously.
+
+For example consider this circuit or this bus, here we have let's say SCL and SDA lines and let's say we
+
+have connected 4 devices 1 2 3 and 4.
+
+And even though if you don't connect any capacitors here which are not required actually these are actually
+
+accidental capacitors.
+
+So, basically these are also called as parasitic capacitor.
+
+They actually resist or they become hurdle for the signal to rise from zero to high state.
+
+So, whenever you are calculating the pull up resistance value you have to take bus capacitance into
+
+account.
+
+So, that's why this equation is created. So where takes into account of bus capacitance. All right.
+
+Now let's understand some points about I2C bus capacitance . The bus capacitance is a collection of
+
+individual pin capacitance
+
+With respect to ground. Capacitance between the SDA and SCL parasitic capacitance. Capacitance added
+
+by the devices hanging on the bus, bus length dielectric material medium etc.
+
+So, all of these are reasons for the accidental capacitance in I2C bus and remember that as
+
+you are bus length increases the wire length increases the capacitance also increases.
+
+And also remember that more devices on the bus means more pin capacitance have been added to the bus.
+
+All right.
+
+After that bus capacitance limits, how long your I2C wiring can be and how many devices you can connect
+
+on the bus because that is the limit for both capacitance in the specification and that we can explore
+
+by the specification.
+
+So, if you go to the table number 10 then you can see that, there is the specification value for
+
+tr.
+
+As I mentioned earlier, So rise time for both SDA and SCL signal so should not cross thousand nanoseconds
+
+and bus capacitance.
+
+So, here it is Cb, So the maximum bus capacitance for standard mode is 400 PF. and it is also
+
+400 PF for fast mode.
+
+That means your applications over all bus capacitance should not cross this value.
+
+All right.
+
+So, for maximum allowed but capacitance you had to check the spec.
+
+Let's consider one exercise.
+
+So, for fast mode I2C communication with following parameters calculate the pull up resistor value.
+
+So, now let's say bus capacitance is 150 PF. and VCC is 3.3 V. So how to calculate
+
+the bus capacitance.
+
+Remember that.
+
+So, you can calculate this by using capacitance measurement tools or meters multimeter or by using some
+
+advanced tools you can calculate the over all bus capacitance.
+
+But you can model your bus to at least calculate the approximate value of the bus capacitance.
+
+So, let's say we have a bus I2C bus with four devices connected.
+
+This is a first device.
+
+Second device.
+
+Third device.and fourth device.
+
+Now each device will add its own pin capacitance to the bus and let us consider that is approximately
+
+as 10 PF.
+
+So, each device actually adds 10 PFs of bus capacitance.
+
+So, since we have four devices.
+
+So, we can say that from devices approximately 40 PFs of bus capacitance will get added to
+
+the bus and also by considering the length of the wires like SCL and SDA and from other factors like
+
+the PCB wirings.
+
+And by considering the dielectric medium etc. So we can add another 100PF. So approximately
+
+we can consider the bus capacitance of 150 PF in this case, or even less than that or
+
+even more than that.
+
+So, you have to adjust something like that.
+
+So, this is approximately value.
+
+So, in the specification of the I2C device it will be mentioned actually.
+
+So, what exactly is the pin capacitance of the device. For example let's go to one I2C device.
+
+This is actually the DS1307.
+
+I2C based real time clock chip and this works over I2C protocal. So you can interface this chip to the
+
+microcontroller over I2C pins. if you check the data sheet of this device.
+
+It will give you lots of information about the I2C communication and recommended settings information.
+
+So, for example here you can see that this device can communicate only in standard mode.
+
+So, that means the maximum serial clock frequency of this device will be 100 KHz like that and you can also see
+
+that there is a table called capacitance.
+
+So, this device is actually mentioned pin capacitance for SDA and SCL as 10 PF.
+
+So, this you have to consider. So this you have to add to overall bus capacitance.
+
+So, approximately we can say that each device will add 10 PFs of pin capacitance to the bus.
+
+And now let's solve this problem.
+
+So, now here let's first calculate the Rp minimum. So Rp minimum is equal to So let's consider this
+
+VCC as 3.3-0.4 that is VOL divided by IOL that is 3 *10^-3 .
+
+This value is given by the specification. and this value is also given by the specification and
+
+this is applied voltage to the microcontroller.
+
+All right. Or you can also say that this is the high state of GPIO pin.
+
+So, The IO pins high state is 3.3 V, low state means zero or you can also call
+
+it reference voltage.
+
+So, this would give you 966 Ohm.
+
+And now let's calculate Rpmax, which is actually the function of bus capacitance and Trise.
+
+So, Trise is 1000*10^-9. So maximum Trise given by the specification divided
+
+by 0.8473 into the bus capacitance.
+
+Let's consider it as 150 PF. 150*10^-12
+
+So, here actually this is not 1000ns for fast mode, the fast mode the value is different.
+
+So, let's refer to the specification, fast mode is actually the maximum Trise is 300 ns.
+
+So, this would be 300 * 10^-9.
+
+All right. now let's calculate that 300/0.8473/150
+
+That would give you 2.3 KOhms.
+
+So, your Rp should be less than or equal to 2.3 KOhms. and it should be greater than
+
+966 ohms
+
+So, this is the limit for the pull up resistance, should be greater than 966.
+
+No problem.
+
+And it should be less than 2.3 Kohm.
+
+So, if you select Rp is equal to let's say 2.2 K Ohm then it would be a good value, right ?
+
+So, it will also prevent higher current consumption.
+
+Also it takes care of the rise time requirements.
+
+Right ?
+
+But if you use blindly let's say 22 K Ohms then it would cause problems for the Trise requirements.
+
+Right ?
+
+So, the T rise may go out of 300 nanoseconds if you're both capacitance is too high.
+
+So, basically everything has to be analyzed on the osciloscope.
+
+Great !
+
+So, in all our exercises what we practice in this course actually you don't need the external pull up
+
+resistor. So you can test the exercises with the internal pull up resistance of 40 KOhms. Because
+
+we don't have many devices connected on the bus and also our wire length is very short.
+
+And so we can consider the bus capacitance less than hundred or something like that but we are very serious
+
+about these resistance values.
+
+When you are used to developing product based on I2C protocol then you have to calculate the correct value of
+
+the pull up resistor by respecting the trise and also by taking into account the bus capacitance.
+
+Great !
+
+So, that's about the pull up resistor value calculation about the Trise and also about the importance
+
+of trise.
+
+And also bus capacitance and with all these details in that from the next lecture onwards let's do some
+
+exercises and also in the driver what we have developed. So, in the I2C driver
+
+So, we actually didn't configure that Trise timing for the I2C communication that we have to configure
+
+So, that we can do by programming the T rise register of the I2C peripheral.
+
+You can go to the T rise register here, and I would suggest you to read about this register and in the
+
+next lecture let's complete our I2C init with Trise related setting. Because configuring this register
+
+is very important.
+
+So, here you have to mention maximum risetime for FM or standard mode.
+
+All right.
+
+So, we'll do this in the next lecture.
+
+So, with that note I would like to end this lecture and let me know if you have any questions.

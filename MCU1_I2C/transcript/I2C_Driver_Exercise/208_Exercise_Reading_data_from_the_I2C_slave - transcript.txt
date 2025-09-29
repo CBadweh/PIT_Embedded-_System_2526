@@ -1,0 +1,157 @@
+Hey, welcome back to the lecture.
+
+So, now let's do one more exercise in order to understand master receiving data from the slave. And the
+
+exercise is I2C Master and I2C Slave communication.
+
+So, when the button on the master is pressed, master should read and display data from the Arduino slave
+
+connected.
+
+So, first master has to get the length of the data from the slave to read subsequent data from the slave.
+
+So, this is basically reading of data which is there in the slave device.
+
+And for this you will be using this configuration, so use I2C in standard mode 100KHz
+
+and also you can use internal pull-up resistors.
+
+All right. Now let's move forward. So, things you need for this exercise: Arduino board which acts
+
+as slave device, ST board which acts as master device, some jumper wires to connect I2C pins and
+
+pull-up
+
+resistors are only required if your pin doesn't support internal pull-ups.
+
+And this is how you connect the board.
+
+You connect ST to the Arduino board. This is master, this is slave, through I2C pins and the data
+
+will be read from the slave to the master and the master has to print the receive data over the semi
+
+hosting.
+
+All right. Now let's move forward.
+
+So, this is how you should do the connection. Again
+
+the same pins we will be using. So, don't use PB9 here instead of a use PB7.
+
+Because, we faced some issues with PB9, so use PB7.
+
+All right. So, that's it. So, we will be using button in order to initiate the I2C transactions
+
+and also if you want to you can use the USB logic analyzer.
+
+Great.
+
+Now let's move forward. So, step 2 is you have to download this sketch 002I2CSlaveTxString
+
+into the Arduino board in order to perform this exercise. Your slave device, that is Arduino board should
+
+be ready with this sketch.
+
+All right. So, procedure to read the data from the Arduino slave.
+
+Now the Arduino I2C sketch is written in such a fashion that you should send some commands
+
+to get the response.
+
+So, first master should send command code 0x51 to read the length of the data from the
+
+slave. So, first master should have the idea about the length, right?
+
+So, how many data bytes are really present in the slave device?
+
+So, for that, master should first send the command 0x51,
+
+that is a command code.
+
+So, the master should send the command 0x51 to slave in order to fetch one byte of length information.
+
+And after that, master should send the command code 0x52 to read the complete data from the
+
+slave, and after that, master has to display that data using semi hosting.
+
+All right. Now let's see how to execute these procedures.
+
+Let's understand I2C transactions to read the 1 byte length information from the slave.
+
+So, how to achieve this?
+
+Let's see.
+
+So, first master should send a command to slave, right?
+
+OK. So, the first thing, that is master sending command to slave.
+
+So, first master actually performs data write.
+
+Right?
+
+That is master sending command code.
+
+So, now first master sends the command code 0x51
+
+Right.
+
+So, that is actually the write operation to the slave, isn't it?
+
+So, that's why, the read-write position will be 0.
+
+Great!
+
+And after that, master reads the data, right? Master reading response from the slave.
+
+The response is actually length information, right? which is actually returned by the slave.
+
+So, for this I2C transaction master actually makes read-write bit as 1 in order to read
+
+one byte of data.
+
+So, this is a case of reading 1 byte.
+
+All right.
+
+So, that's how master actually use I2C transactions to finish fetching the length information from
+
+the slave.
+
+So, we are going to use two I2C transactions.
+
+The first transaction is Data Write, that is master sending the command and second I2C transaction
+
+is Data read, that is master reading 1 byte of data from the slave which is nothing but the length
+
+information.
+
+So, after that, now let's see I2C transactions to Read length bytes of data from the slave.
+
+For that, first thing is Data Write. So, master will be sending the command code
+
+0x52 to the slave, and that actually indicates the slave that it should send the data to the master.
+
+So, after that, the next I2C transaction is Data Read. So, master reading the response from
+
+the slave.
+
+And this n is actually length, which is fetched in the earlier transactions.
+
+All right. So, in the Data Read master actually receives all the bytes from the slave.
+
+Great.
+
+So, now let's code this exercise and test this exercise in the next lecture. But before that, what
+
+I would suggest to you is, go through these I2C transaction diagrams
+
+and understand it. And according to that, try to complete this exercise and you can also use semi hosting
+
+to print the data.
+
+So, try to code for yourself and see whether it works or not, and in the next lecture, I will complete
+
+this exercise.
+
+I will see you in the next lecture.

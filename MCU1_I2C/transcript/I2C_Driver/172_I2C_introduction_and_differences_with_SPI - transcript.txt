@@ -1,0 +1,251 @@
+Hey, welcome back to the course
+
+and from this lecture on words let's understand about one of the important protocol that is Inter-Integrated
+
+Circuit Protocol. It is actually pronounced as "I squared C" or "I two C". All right. Now let's begin. What
+
+is the I2C protocol?
+
+It is just a protocol to achieve serial data communication between integrated circuits which are very
+
+close to each other. But, it is more serious protocol than SPI
+
+because the companies have come forward to design a specification. The I2C protocol details like
+
+how data should be sent, how data should be received, how hand shaking should happen between sender and
+
+receiver, error handling.
+
+So, all of these are actually very complex than SPI. So, in other words SPI is actually a very simple protocol
+
+compared to I2C.
+
+So, now let's take a look into differences between SPI and I2C protocol.First of all specification.
+
+So, I2C is based on dedicated specification. The spec is designed by NXP and you can get
+
+the spec at this link. So, you can just go to Google and you can search I2C specification with
+
+NXP keyword.
+
+So, you will get the specification. For SPI
+
+there is no dedicated spec. But you can find some proprietary spec like VDD designed by TI and Motorola.
+
+So, they have their own spec,but there is no global dedicated spec for SPI.
+
+All right.
+
+And one more important thing about I2C protocol is it is multi master capability. I2C potocol
+
+is multi master capable, whereas SPI has no guidelines to achieve multi master capability.
+
+So, in SPI it depends on microcontroller designers or vendors. For example, STM SPI peripherals can be used
+
+in multi master configurations, but the arbitration between multiple masters should be handled by software
+
+code. But the arbitration in I2C is actually taken care by the hardware automatically.
+
+So, that's one of the important feature of the I2C peripheral. And after that ACKing. I2C hardware
+
+automatically ACKs every byte received.
+
+All right.
+
+SPI does not support any automatic ACKing.
+
+So, if you want you have to implement by software. But the I2C hardware implements automatic
+
+ACKing for every byte reception,
+
+that is one of the important feature of the I2C. And more on this will see later and will also
+
+understand more about this feature when we do exercises.
+
+All right. Now let's move forward. So, the number of pins used for the communication. I2C needs just
+
+2 pins for the communication between master and slaves, whereas SPI may need 4 pins and even more
+
+than that if multiple slaves are involved.
+
+For example, take a look into this scenario where you have 1 master and 3 slaves. Right?
+
+So, here you can see that at the master side you have consumed 6 pins. Right?
+
+And on the slave side you have consumed 4 pin. Here master and slaves are communicating over SPI bus.
+
+Right?
+
+If you want to use I2C here, then you would need just 2 pins.
+
+So, one is called SCL that is serial clock and another one is SDA that is called as serial data.
+
+So,in I2C you just need 2 pins to connect all the slaves and masters and that is one of the biggest
+
+advantage of the I2C. So, it is very simple you just take the device and you just connect it's
+
+SCL to SCL line and you connect SDA to SDA line, that's it. And the device will be up and running.
+
+So, very simple as for as pins are concerned.
+
+All right.
+
+So, and you can also see that the pins that is SCL and SDA pins are actually pulled to VCC by using the
+
+pull up resistors and about that to learn in the later part of the videos.
+
+This is how the I2C bus looks like. And now let's move forward and addressing.
+
+So, remember that I2C master talks to slaves based on slave addresses,
+
+So, in I2C protocol it is address based communication.
+
+For example, take a look into this picture.
+
+So, here there are actually 2 masters and 3 slaves. Right?
+
+And each device will have its own address and master communicates with a slave based on the address.
+
+So, that is one of the important feature of the I2C protocol, whereas SPI doesn't support addressing.
+
+So, in SPI what happens is a dedicated pin will be used to select the slave and that we call as slave
+
+select. Right?
+
+So, you have studied about this in the earlier part of the course. And in I2C every slave has
+
+its own address.And
+
+now let's move forward communication so I2C is half duplex, but as SPI is full duplex. And you can
+
+also use SPI in half duplex mode,
+
+but I2C is basically half duplex communication. Now speed, here actually the I2C loses to SPI.
+
+So, remember that for I2C the maximum speed which you can achieve is 4 MHz and that is
+
+only possible if you use the ultra speed plus mode of the I2C peripheral.
+
+Remember that, this ultra speed plus will not be supported by all the microcontrollers,
+
+some high end microcontrollers will support that.
+
+For example, for most of the ST microcontrollers the max speed is just 400 KHz or 1MHz, not
+
+more than that.
+
+But for SPI max speed is it's peripheral clock divided by 2 and you already know this.
+
+Right?
+
+For example, if the peripheral clock is let's say 20 MHz, then SPI can reach up to 10 MHz.
+
+So, SPI is actually very very fast compared to I2C.
+
+Let's move forward.
+
+So, slaves control over serial clock.
+
+So, in I2C slave can make master wait by holding the clock down if it's busy, so thanks to the clock
+
+stretching feature of the I2C.
+
+But in SPI, slave has no control over the serial clock and the programmers may use their own tricks to
+
+overcome this situation.
+
+So in SPI, slave has no control over the serial clock produced, but in I2C there is a feature called clock
+
+stretching. Now most of the microcontrollers I2C peripherals will support this clock stretching feature
+
+and by using that slave can put the master into wait stage.
+
+This happens by the means of pulling the clock down to ground state by the slave. So, and more on this
+
+feature we'll study later and this is one of the important feature which is supported by I2C, but not
+
+by SPI.
+
+Now, let's move forward.
+
+All right. Now let's discuss something about the data rate. Data rate that is number of bits transferred from
+
+sender to receiver in 1 second is very much lesser in I2C compared to SPI.
+
+So, that is one of the biggest advantage of SPI. SPI is really fast compared to I2C.
+
+So, that's why you cannot simply replace all SPI based applications with I2C.
+
+For example, consider a scenario where you are streaming are you samples from one board to another board
+
+over SPI protocol or SPI bus.
+
+Now, let's say for data streaming you should use very high data rate.
+
+Right?
+
+So, for example let's say you are using 10mbps of data rate.
+
+So, in this application you cannot simply replace SPI with I2C. Because, I2C is derive it is very very
+
+less compared to SPI. So, that's why you have to use I2C protocol where low data rate requirement is visible.
+
+For example, gathering data from the sensors like that.
+
+So, let's take an example
+
+so consider STM32F4X. If you have a microcontroller based on STM32F4X family then if you have
+
+peripheral clock of 40MHz, then in I2C you can acheive data rate up to 400Kbps.
+
+All right. But in SPI, it is actually 20 mega bits per second. So, in the above scenario SPI is actually
+
+50 times faster than I2C.
+
+There are some microcontrollers of STM32F4X family where you can achieve I2C data rate
+
+up to
+
+but not more than that. So, you should consider this point that data rate is really small in I2C
+
+compared to SPI.
+
+Now, let's move forward.
+
+All right.
+
+So, now these are some of the terminologies we referred in I2C protocol. So, transmitter means a
+
+device which sends data to the bus. Receiver the device which receives data from the bus that is called
+
+as receiver. The term master means in I2C, the device which initiates a transfer, generates a
+
+clock signals and terminates a transfer. And as you make a progress will understand all these things
+
+how a master initiates a transfer, how it initiates the data, how it terminates a particular data transfer,
+
+so all these things will understand. But you have to remember that, the data transfer is not initiated
+
+by the slave it is always initiated by the master. Slave is a term is used for the device which is addressed
+
+by the master. All right. Now Multi-master. More than one master can attempt to control the bus at the
+
+same time without corrupting the message, so that we call as multi master configuration. Now arbitration.
+
+This is a procedure to ensure that, if more than one master simultaneously tries to control the bus, only
+
+one is allowed to do so and the winning message is not corrupted.
+
+So, that technique or procedure is called as arbitration and this is automatically taken care by the
+
+I2C hardware.
+
+All right.
+
+So, all these some of the terminologies used in I2C specification
+
+and now let's move forward.
+
+Alright.
+
+So, now in the next lecture let's understand about the SDA and SCL signals.I will see you in the next lecture.

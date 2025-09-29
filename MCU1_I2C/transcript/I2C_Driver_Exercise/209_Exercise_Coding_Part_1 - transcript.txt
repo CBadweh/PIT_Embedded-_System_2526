@@ -1,0 +1,157 @@
+Hey, welcome back to the lecture.
+
+So, now let's create a new source file so let me copy this source file and let me paste here. Let me
+
+change the name to 11I2C_master_rx_testing.
+
+All right.
+
+And let me save, and let me just exclude this file that is TX testing from the build.
+
+All right.
+
+So, this is RX testing.
+
+Right?
+
+Great! So, the slave address is same 68
+
+and let's see what are the codes
+
+we don't want.
+
+All right.
+
+So, we are actually receiving the data, right?
+
+so now let's remove this.
+
+All right.
+
+This is actually the receive buffer, so let me change the name to rcv_buf. Grate! And after that
+
+I2C1_GPIOInits we want
+
+let's keep that, this also we want
+
+let's keep that, and button init
+
+we want
+
+so let's keep that.
+
+All right.
+
+So, all these codes are actually required peripheral control.
+
+All right.
+
+So, now let me remove this last line and all these codes
+
+actually we want. Isn't it? Great!
+
+Right?
+
+So, what is the first thing we have to do? That we have to understand by using our I2C transaction
+
+document.
+
+Right? So, first we have to finish this I2C transactions to read 1 byte length information from
+
+slave. For that, you have to perform first data
+
+write.
+
+Right?
+
+So, you have to send the command code 0x51.Right? So, let's do that. So, let me just create a variable
+
+let's say, uint8 command code to hold the command code
+
+All right. So, first
+
+commandcode =0x51. Right?
+
+So, now let's send that.
+
+So, first you have to send the handle, so we have to send the address of the handle and address of the
+
+buffer,
+
+that is address of this variable and the length is 1 byte,
+
+and what is the last parameter which is nothing but the slave address.
+
+So, let's use SLAVE_ADDR.
+
+All right. So, this completes our data write. Now
+
+let's move forward. Data read
+
+so master reading response from the slave and that is actually the length Information, 1 byte length information.
+
+And we can create one more variable here
+
+uint8_t len.
+
+All right. Great.
+
+So, this is a place holder for length and we can call I2C_MasterReceiveData. The parameters are same
+
+let's copy these things, and here you have to instead of command code you have to mention the place holder address
+
+for the length.
+
+Right?
+
+So, let's use address of length.
+
+So, this length will be filled with the data which is received from the slave.
+
+So, the length a value will be stored in the length variable.
+
+Great!
+
+And we are going to receive only one byte. That's it. Great!
+
+And after that,
+
+let's move forward.
+
+So, I2C transactions to read "length" bytes of data now. First you have to perform data
+
+write,
+
+so master sending command to slave.
+
+So, you have to send a command code 52.
+
+All right.
+
+Now let's
+
+perform this and here let's make the command code 52, and after that our next I2C transaction that is
+
+data read. So, now master reads the data
+
+I mean the whole data from the slave, so that is data read.
+
+And for that, let's execute master receive again
+
+and here the first parameter is handle,
+
+and here you have to give the address of the receive buffer
+
+and after that length. So, length is actually you have to use this variable now for the length.That's it.
+
+And here for the receive buffer
+
+let's use the size let's say 32 bytes. Yes,
+
+that completes reading the data from the slave. And after this I2C transaction you should see whole
+
+data is being received into this buffer. And in the next lecture let's test this, but before that let
+
+me just build the project to see everything is fine or not. Yes,
+
+the code compiles successfully and I will see you in the next lecture.

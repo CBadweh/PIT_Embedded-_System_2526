@@ -1,0 +1,207 @@
+Hey, welcome back to the lecture.
+
+So, now let's understand different types of errors which may happen in the I2C communication. So
+
+the first one is Bus error. This error happens when the interface detects an SDA rising or falling edge.
+
+while SCL is high. So, occurring in a non valid position during a byte transfer.
+
+So, during the byte transfer if any invalid transition happens on SDA line then the bus error actually
+
+triggers and the bus error flag in the status register will be set.
+
+And if interrupt is enabled then an interrupt will be triggered on the interrupt IRQ line.
+
+All right.
+
+So, now let's move to the next error that is arbitration loss error.
+
+So, this error can happen when the interface looses the arbitration of the bus to another master.
+
+So, basically this may happen only in multi master bus configuration. So when the circuit has multiple
+
+masters.
+
+All right.
+
+Now let's move forward. So, ACK failure error.
+
+So, this error happens when no ACK is returned for the byte sent and overrun error.
+
+So, this happens during reception.
+
+So, remember that. Overrun
+
+Always happens during a reception and under run happens during transmission. So, overrun happens when
+
+a new byte is received and the data register has not been read yet.
+
+And the new received data byte is lost. In that case the overrun error happens.
+
+For example let's say we have one data register.
+
+in I2C and we have a shift register.
+
+Right ?
+
+And from here the software actually reads the data.
+
+Isn't it ? when one byte is received in the SR what happens is it is actually moved to the DR. right ?
+
+So, let's say DR is full, one byte is already there in the DR. and let's say software actually didn't
+
+read this byte and let's say a second byte is actually received in the SR. Now the SR has the second
+
+Byte.
+
+And DR has the first byte which is the previous one, and let's say now the third byte comes, So when
+
+the third byte comes then the I2C peripheral actually discards this. Because there is no place to keep
+
+the third byte isn't it ? So, that is what we call as overrun.
+
+But don't worry this error will not happened in I2C if clocks stretching is enabled. Because in this
+
+condition when both the DR and SR is filled, there is one more flag called BTF. So, BTF will be
+
+immediately set, indicating that both SR and DR are full and the clock will be stretched automatically.
+
+So, when the clock is stretched both slave and master actually they go into the waiting state. So, the
+
+BTF flag will get cleared only when the software reads from the data register. If clock stretching
+
+feature is not supported from the I2C peripheral then overrun error may happen and software has to
+
+be careful with that. Great ! and let's move forward, So under run so under and happens in transmission
+
+when a new byte should be sent and the data register has not been written yet and the same byte sent
+
+twice.
+
+All right.
+
+So, after that the PEC error. So the PEC error happens when that is CRC mismatch and if you have enabled
+
+the CRC feature. So, we are actually not using CRC feature in this driver development task and the PEC
+
+error will not happen.
+
+All right.
+
+Now let's move forward and the timeout error. So, this happens when master slave stretches the clock by
+
+holding it low more than the recommended amount of time.
+
+So, what is the recommended amount of time which is actually mentioned in the reference manual.
+
+So, if the stretching of clock to low crosses that recommended amount of time then the timeout error
+
+will be triggered by the I2C peripheral. Great !
+
+So, these are some of the errors which may happen in the I2C peripheral. and we have to handle those
+
+errors.
+
+In our code.
+
+So,we have to catch that errors and the driver should report that error to the application and then application
+
+may take appropriate action.
+
+For example, if it is ACK failure then the application may try another address.
+
+If it is arbitration lost then the application may try after some time and if it is bus error then
+
+the application may restart the communication etc. So, drivers job is just to catch that error and notify
+
+the application.
+
+Great !
+
+Now let's move forward. let's understand what exactly is a BTF flag in TX and how we can use this
+
+to prevent the under error. So, BTF flag is applicable both in TX as well as in RX remember.
+
+Now let's see what is the significance of BTF flag during TX . During TXing of data byte
+
+If TX is equal to 1 then that means data register is empty.right ?? and if the firmware has not written
+
+any byte to data register before shift register becomes empty then BTF flag will be set and clock
+
+will be stretched to prevent the under run.
+
+All right. So, that is very important.
+
+So,let's say this is a shift register and let's say this is a data register.
+
+All right.
+
+So, let's say this is Tx.
+
+Now let's say software writes.
+
+One byte of data into the DR.
+
+So, now that data byte will get copied into the SR right ?
+
+That is shift register.
+
+All right.
+
+So, the data byte comes over here and the SR will start transmitting that byte to the external world isn't
+
+it ?
+
+Now, here the data register is now empty.
+
+So, that's why TXE becomes one.
+
+Right.
+
+So, when TXE it becomes one the software should put another byte into the DR.
+
+Otherwise what happens is.
+
+So, when the shift register becomes empty it again loads another byte from the DR. which is actually
+
+not a valid byte and it will start transmitting.
+
+So, basically you'll be sending a wrong data to the external world.
+
+Right ?
+
+This can be avoided by the BTF flag.
+
+Now what happens here is if software didn't write the second byte to the DR, then once the shift register
+
+complete sending this byte the current byte.
+
+So, what happens is BTF will be set to 1. and clock will be stretched. So, when TXE equal to 1 and
+
+BTF is equal to 1.
+
+That means that both the DR and SR are empty and clock will be stretched in order to avoid
+
+the under run.
+
+Now if you don't use clocks stretching option then what happens is the BTF will not be set and there
+
+is the chance of under run.
+
+All right. Now let's move forward.
+
+So, what is the significance of BTF flag in RX and preventing overrun. So, this
+
+I have already mentioned in the earlier part of this discussion. Remember that if RXNE equal to
+
+one then it means new data is waiting in the data register and if the firmware has not read the data byte
+
+yet before shift register is filled with another new data.
+
+Then also the BTF flag will be set and clock will be stretched to prevent overrun.
+
+All right.
+
+So, now in the next lecture let's develop sending and receiving APIs in interrupt and I'll
+
+see you in the next lecture.

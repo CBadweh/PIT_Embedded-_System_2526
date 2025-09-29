@@ -1,0 +1,81 @@
+Hey, welcome back to the lecture.
+
+So, in the previous lecture we actually completed this part. Right? Procedure to read only one byte from
+
+the slave. All right.
+
+All right. Now, let's complete this part.
+
+So, procedure to read data from slave when length is greater than 1. So, here again you have to clear
+
+the ADDR flag,
+
+so let's do that. So, when you clear the ADDR flag then only the data reception begins. And after that,
+
+there is a for loop so read the data until length becomes 0. So, we start from
+
+i =Len and i > 0.
+
+So, here let's wait until RXNE becomes 1, so that means we have to wait for the RXNE.
+
+All right. Now let's do that.
+
+And after that if i =2, so that means reading the last 2 bytes.
+
+Remember, this we actually discussed in the earlier diagram. Isn't it? So, this condition let's code later.
+
+So, let's assume that i is not is equal 2, so let's assume i use something like let's say 6. So, length is 6.
+
+So, a wait till RXNE becomes 1, and then read the data and increment the buffer address
+
+and like that.
+
+Right? All right.
+
+So, read the data.
+
+So, that means we have to read the data into the buffer and increment the buffer address, let's do that
+
+++ . Right? And then repeat again. Again wait for RXNE becomes 1, then read like that
+
+you have to continue until i becomes 2. So, when i becomes 2
+
+so you have to clear the ACK
+
+bit here, so let's clear that clear the ACK bit.
+
+So, for that we have manage
+
+so that means disable ACKing. So, let's copy this.
+
+So, disable ACKing and then generate the STOP, so let's do that.
+
+All right. That's it.
+
+And that completes the master receive data.
+
+So, pay some attention to the comments what I have written and you will understand, it is very simple.
+
+And after that at the end you have to re enable ACKing because, so when you enter this API the ACK was
+
+enabled. Right?
+
+So, that's why before leaving this API you have to re enable the ACKing
+
+remember that.
+
+Let's do that. So, I can copy this line and I can make I2C ACK enable.
+
+All right. So, this you have to do
+
+only if, so in the I2C handle if you go to the config and if the ACK control is equal to I2C
+
+ACK enable, then only you have to do.
+
+All right.
+
+So, that completes our I2C master receive data and in the next lecture let's do an exercise to
+
+test this API.
+
+I will see you in the next lecture.

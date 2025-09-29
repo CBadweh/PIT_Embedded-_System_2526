@@ -1,0 +1,85 @@
+Hey welcome back..
+
+Now let's test this application.
+
+OK ? So, what you have to do is, you have to actually open 003MasterRxString and so you have to open
+
+003I2CMasterRxString.
+
+And this you have to download to the Arduino board.
+
+So, after that now let's open our slave code and let's compile this.
+
+OK.
+
+So, the code is compiled successfully no problems OK.
+
+So, there are unused variables.
+
+OK so let's see.
+
+All right.
+
+So, these two you can remove.
+
+All right.
+
+So, now let's program. Now let's open the Serial monitor OK and now let's type.
+
+"s" here and send and here it is.
+
+OK.
+
+So, we received that data.
+
+So, the data length is 26.
+
+And this is the data which we got from the our STM32 slave.
+
+All right.
+
+So, now let's try once again.
+
+OK. So, Now let me start tracing and
+
+let's send s.
+
+All right.
+
+So, here it is.
+
+So, these are the data received.
+
+Okay.
+
+All right.
+
+So, try this at your desk and I'll see you in the next lecture. Hey, welcome back.
+
+So, there is a quick update.
+
+OK.
+
+Now some students have faced issues in this application that some students have mentioned that the master
+
+actually receives NACK for the address phase.
+
+OK.
+
+Now the reason for that would be in the driver file.
+
+So, make sure that in the I2C init here in this section program the device own address make
+
+sure that you make the tempreg is equal to zero.
+
+So, this is very important. otherwise
+
+So,you will end up programming wrong address because we have actually updated that tempreg here isn't
+
+it ?
+
+So, you'll do some mistake.
+
+OK.
+
+Make sure that tempreg is set to zero.

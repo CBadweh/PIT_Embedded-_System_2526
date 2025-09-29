@@ -1,0 +1,117 @@
+Hey, welcome back to the lecture.
+
+So, now in this lecture let's implement the I2C_Init API.
+
+So, what are some of the steps we have to follow in order to initialize the I2C peripheral of any
+
+microcontroller? You have to configure the mode.
+
+This is what I am talking is I2C specific of course, I2C peripheral clock has to be enabled
+
+first. So,
+
+that is a mandatory step that you have to do, but the steps what I am discussing is specific to the I2C. First
+
+configure the mode whether you are going to operate the I2C peripheral in standard mode or fast mode.
+
+Fast mode + Ultra Fast mode
+
+There are various modes according to that you have to configure the mode. All right. After that configure
+
+the speed of the serial clock,
+
+that is SCL.
+
+I mean how many kilohertz of speed you want.
+
+So, 100, 50 KHz, 100 KHz, 200, 400 like that.
+
+Remember that, when you use higher frequencies you cannot drive the
+
+I2C bus to longer distances.
+
+The wire length has to be small when you use higher frequencies.
+
+But, if you run the I2C serial clock at 25 KHz or 50 KHz like that.
+
+So, then you may use little longer wires.
+
+So, that would be the second step that is configure the speed of the serial clock.
+
+And after that configure the device address.
+
+Suppose, if your device acts like slave then that slave needs an address.
+
+Right?
+
+That's why, you have to configure the device address.
+
+So, device address applicable only when the device is behaving as slave. And after that enable the
+
+ACKing, which is very very important feature of the I2C.
+
+So, we just explored that ACKing is disabled by default. So, which may not be true in other microcontrollers
+
+so you have to refer to the reference manual. And after that, configure the rise time for I2C
+
+pins, that is SDA and SCL and about that time we will discuss later. The rise time is time required
+
+for the signal to reach from ground level to the VCC level.
+
+So, that is called as rise time
+
+or slew rate.
+
+That must be configured according to the I2C specification, so about that will discuss later.
+
+So, now these are some of the initialization steps,
+
+and remember that when you do all these initializations to the I2C peripheral, the I2C peripheral
+
+has to be disabled.
+
+You should not do all these initialization by enabling the peripheral. So, you should first disable the
+
+peripheral anyway
+
+the peripheral will be disabled by default.
+
+Do all these initializations, then enable the peripheral in the control register.
+
+All right. Now let's move forward.
+
+Let's go to the i2c_driver.h and let's copy these 2 functions
+
+I2C Init and DeInit and let's go to the i2c_driver.c and here I have peripheral control, peripheral
+
+clock control.
+
+All right.
+
+And here let me implement these functions.
+
+Alright. So, first let's implement I2C_Init and I2C_DeInit
+
+I am not going to implement,
+
+so you have to referred to the RCC reset registers in order to implement this.
+
+which is very simple.
+
+And before implementing I2C_Init let's look at some more details about this step, that is configuring
+
+the speed of the serial clock.
+
+Alright.Now, let's explore that which is very important. So, in the next lecture let's explore the
+
+I2C serial clock control settings. So, I would suggest you to open your reference manual and go to these
+
+registers CR2 and CCR and take a look into these fields try to read the description of these fields
+
+that is FREQ and CCR and I will explain you that in the next lecture.
+
+So, because before initializing the peripheral understanding the concept of serial clock control is very much
+
+important.
+
+So, We'll see that in the next lecture.

@@ -1,0 +1,55 @@
+Hey welcome back to the lecture.
+
+So, now we have to develop two more APIs.
+
+One is master send data with interrupt and master receive data with interrupt.
+
+So, these are interrupt flavors or non blocking flavors of the APIs. which we developed in the earlier part
+
+of the course.
+
+All right. Now let's move forward, As we did in the SPI section, so we have to modify our handle structure
+
+in order to store various data like other transmission buffer address, received buffer
+
+Address, the length Information, the slave address information etc..
+
+So, now you have to modify the handle structure according to this information.
+
+So, what you're seeing here. So, remember that the I2C is actually half duplex communication right ?
+
+Unlike SPI which was the full duplex right ?
+
+So, that's why you see only one variable here. in order to store the transmission and the reception state.
+
+So, that combinly called as TX_RX state.
+
+So, because in I2C when you are transmitting you cannot receive.
+
+Right ?
+
+So, and when you are receiving you cannot transmit. The application states
+
+Maybe I2C ready, I2C busy in RX or I2C busy in TX. All right.
+
+And this variable is to hold the applications TX buffer address and this variable is to hold
+
+The applications are RX buffer address and these are for length information and this is variable
+
+to store a slave or device address.
+
+And after that that is one more variable which is required actually.
+
+So, which is actually stored the RX size. So, we'll see why this variable is required when we implement
+
+the ISR and after that there is one more variable that is called as repeated start to store the
+
+repeated start information.
+
+All right.
+
+So, change your handle structure according to this structure and include all these member elements.
+
+And after that in the next lecture let's implement the I2C Master send data with IT API. I'll
+
+see in the next lecture.
