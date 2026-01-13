@@ -1,6 +1,0 @@
-"./autogen/startup_stm32f407vgtx.o"
-"./autogen/syscalls.o"
-"./autogen/sysmem.o"
-"./bsp/lcd.o"
-"./drivers/src/stm32f407xx_gpio_driver.o"
-"./src/001led_toggle.o"
