@@ -52,7 +52,7 @@ void I2C1_GPIOInits(void)
 
 	//sda
 	//Note : since we found a glitch on PB9 , you can also try with PB7
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_9;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_7;
 
 	GPIO_Init(&I2CPins);
 

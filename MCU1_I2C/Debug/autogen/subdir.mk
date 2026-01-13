@@ -28,7 +28,7 @@ C_DEPS += \
 autogen/%.o: ../autogen/%.s autogen/subdir.mk
 	arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 autogen/%.o autogen/%.su autogen/%.cyclo: ../autogen/%.c autogen/subdir.mk
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I"C:/Users/Sheen/Desktop/Embedded_System/PIT_Embedded_Systems/MCU1_GPIO_Driver_Baremetal_Interrupt/bsp" -I"C:/Users/Sheen/Desktop/Embedded_System/PIT_Embedded_Systems/MCU1_GPIO_Driver_Baremetal_Interrupt/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I"C:/Users/Sheen/Desktop/Embedded_System/PIT_Embedded_Systems/MCU1_I2C/bsp" -I"C:/Users/Sheen/Desktop/Embedded_System/PIT_Embedded_Systems/MCU1_I2C/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
 clean: clean-autogen
 

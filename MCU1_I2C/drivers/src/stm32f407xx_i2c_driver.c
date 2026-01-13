@@ -659,6 +659,9 @@ void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
 	//Implement the code to disable ITEVFEN Control Bit
 	pI2CHandle->pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITEVTEN);
 
+	//Implement the code to disable ITERREN Control Bit
+	pI2CHandle->pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITERREN);
+
 	pI2CHandle->TxRxState = I2C_READY;
 	pI2CHandle->pRxBuffer = NULL;
 	pI2CHandle->RxLen = 0;
@@ -678,6 +681,9 @@ void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
 
 	//Implement the code to disable ITEVFEN Control Bit
 	pI2CHandle->pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITEVTEN);
+
+	// ADD: Implement the code to disable ITERREN Control Bit
+	pI2CHandle->pI2Cx->CR2 &= ~( 1 << I2C_CR2_ITERREN);
 
 
 	pI2CHandle->TxRxState = I2C_READY;

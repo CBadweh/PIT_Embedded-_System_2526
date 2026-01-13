@@ -35,34 +35,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := MCU1_GPIO_Driver_Baremetal_Interrupt
+BUILD_ARTIFACT_NAME := MCU1_I2C
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-MCU1_GPIO_Driver_Baremetal_Interrupt.elf \
+MCU1_I2C.elf \
 
 MAP_FILES += \
-MCU1_GPIO_Driver_Baremetal_Interrupt.map \
+MCU1_I2C.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-MCU1_GPIO_Driver_Baremetal_Interrupt.list \
+MCU1_I2C.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: MCU1_GPIO_Driver_Baremetal_Interrupt.elf secondary-outputs
+main-build: MCU1_I2C.elf secondary-outputs
 
 # Tool invocations
-MCU1_GPIO_Driver_Baremetal_Interrupt.elf MCU1_GPIO_Driver_Baremetal_Interrupt.map: $(OBJS) $(USER_OBJS) C:\Users\Sheen\Desktop\Embedded_System\PIT_Embedded_Systems\MCU1_GPIO_Driver_Baremetal_Interrupt\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MCU1_GPIO_Driver_Baremetal_Interrupt.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Sheen\Desktop\Embedded_System\PIT_Embedded_Systems\MCU1_GPIO_Driver_Baremetal_Interrupt\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MCU1_GPIO_Driver_Baremetal_Interrupt.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MCU1_I2C.elf MCU1_I2C.map: $(OBJS) $(USER_OBJS) C:\Users\Sheen\Desktop\Embedded_System\PIT_Embedded_Systems\MCU1_I2C\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MCU1_I2C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Sheen\Desktop\Embedded_System\PIT_Embedded_Systems\MCU1_I2C\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MCU1_I2C.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -71,14 +71,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-MCU1_GPIO_Driver_Baremetal_Interrupt.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "MCU1_GPIO_Driver_Baremetal_Interrupt.list"
+MCU1_I2C.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "MCU1_I2C.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) MCU1_GPIO_Driver_Baremetal_Interrupt.elf MCU1_GPIO_Driver_Baremetal_Interrupt.list MCU1_GPIO_Driver_Baremetal_Interrupt.map default.size.stdout
+	-$(RM) MCU1_I2C.elf MCU1_I2C.list MCU1_I2C.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

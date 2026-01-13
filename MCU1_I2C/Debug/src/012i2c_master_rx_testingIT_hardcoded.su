@@ -1,0 +1,11 @@
+../src/012i2c_master_rx_testingIT_hardcoded.c:107:6:delay	16	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:116:6:GPIO_Init_Hardcoded	4	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:192:6:I2C1_Init_Hardcoded	16	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:233:6:I2C1_IRQ_Init_Hardcoded	4	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:249:9:I2C_MasterSendDataIT_Hardcoded	32	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:280:9:I2C_MasterReceiveDataIT_Hardcoded	24	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:311:6:I2C_EV_IRQHandling_Hardcoded	32	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:523:6:I2C_ER_IRQHandling_Hardcoded	16	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:587:6:I2C1_EV_IRQHandler	8	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:592:6:I2C1_ER_IRQHandler	8	static
+../src/012i2c_master_rx_testingIT_hardcoded.c:601:5:main	16	static

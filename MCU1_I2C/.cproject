@@ -75,7 +75,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="autogen"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bsp"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry excluding="001led_toggle.c|002led_button.c|017rtc_lcd.c|016uart_case.c|015uart_tx.c|014i2c_slave_tx_string2.c|013i2c_slave_tx_string.c|012i2c_master_rx_testingIT.c|011i2c_master_rx_testing.c|010i2c_master_tx_testing.c|009spi_message_rcv_it.c|008spi_cmd_handling.c|007spi_txonly_arduino.c|006spi_tx_testing.c|004gpio_freq.c|003led_button_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="012i2c_master_rx_testingIT.c|010i2c_master_tx_testing.c|005button_interrupt.c|010i2c_master_tx_testing_hardcoded.c|001led_toggle.c|002led_button.c|017rtc_lcd.c|016uart_case.c|015uart_tx.c|014i2c_slave_tx_string2.c|013i2c_slave_tx_string.c|011i2c_master_rx_testing.c|009spi_message_rcv_it.c|008spi_cmd_handling.c|007spi_txonly_arduino.c|006spi_tx_testing.c|004gpio_freq.c|003led_button_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

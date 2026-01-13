@@ -15,7 +15,7 @@ extern void initialise_monitor_handles();
 //Flag variable
 uint8_t rxComplt = RESET;
 
-#define MY_ADDR 0x61;
+#define MY_ADDR 0x61
 
 #define SLAVE_ADDR  0x68
 
@@ -168,8 +168,7 @@ int main(void)
 }
 
 
-void I2C1_EV_IRQHandler (void)
-{
+void I2C1_EV_IRQHandler (void){
 	I2C_EV_IRQHandling(&I2C1Handle);
 }
 
