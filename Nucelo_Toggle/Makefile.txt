@@ -1,0 +1,73 @@
+# Project name
+TARGET = nucleo_toggle
+
+# Toolchain
+CC = arm-none-eabi-gcc
+AS = arm-none-eabi-gcc
+LD = arm-none-eabi-gcc
+OBJCOPY = arm-none-eabi-objcopy
+
+# Directories
+SRC_DIR = Src
+STARTUP_DIR = Startup
+BUILD_DIR = build
+
+# Source files
+C_SOURCES = $(SRC_DIR)/main.c \
+            $(SRC_DIR)/syscalls.c \
+            $(SRC_DIR)/sysmem.c
+
+ASM_SOURCES = $(STARTUP_DIR)/startup_stm32f401retx.s
+
+# Compiler flags
+CFLAGS = -mcpu=cortex-m4 \
+         -mthumb \
+         -O0 \
+         -g \
+         -Wall
+
+# Linker flags
+LDFLAGS = -mcpu=cortex-m4 \
+          -mthumb \
+          -T STM32F401RETX_FLASH.ld \
+          -Wl,-Map=$(BUILD_DIR)/$(TARGET).map \
+          --specs=nosys.specs
+
+# Object files
+C_OBJECTS = $(C_SOURCES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+ASM_OBJECTS = $(ASM_SOURCES:$(STARTUP_DIR)/%.s=$(BUILD_DIR)/%.o)
+OBJECTS = $(C_OBJECTS) $(ASM_OBJECTS)
+
+# Default target: build everything
+all: $(BUILD_DIR)/$(TARGET).bin
+
+# Create build directory
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
+
+# Compile C files
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Assemble startup file
+$(BUILD_DIR)/%.o: $(STARTUP_DIR)/%.s | $(BUILD_DIR)
+	$(AS) $(CFLAGS) -c $< -o $@
+
+# Link to create ELF file
+$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
+	$(LD) $(OBJECTS) $(LDFLAGS) -o $@
+
+# Convert ELF to BIN
+$(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
+	$(OBJCOPY) -O binary $< $@
+
+# Flash to board (using STM32CubeProgrammer CLI)
+flash: $(BUILD_DIR)/$(TARGET).bin
+	"C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe" -c port=SWD -w $(BUILD_DIR)/$(TARGET).bin 0x08000000 -v -rst
+
+# Clean build files
+clean:
+	rm -rf $(BUILD_DIR)
+
+# Phony targets (not actual files)
+.PHONY: all clean flash
